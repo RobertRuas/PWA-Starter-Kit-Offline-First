@@ -48,13 +48,20 @@
         <section class="info-section">
           <h2 class="section-title">Demonstração</h2>
           <p class="section-text">
-            Esta é a aplicação de demonstração do Starter Kit. Use a aba
-            <strong>Registros</strong> para testar a persistência local.
+            Esta é a aplicação de demonstração do Starter Kit. Explore a vitrine
+            de componentes ou use a aba <strong>Registros</strong> para testar
+            a persistência local.
           </p>
-          <ion-button expand="block" router-link="/records" fill="outline" size="default">
-            <ion-icon slot="start" :icon="listOutline" />
-            Ver registros de demonstração
-          </ion-button>
+          <div class="demo-buttons">
+            <ion-button expand="block" router-link="/showcase" fill="solid" size="default">
+              <ion-icon slot="start" :icon="colorPaletteOutline" />
+              Vitrine de componentes
+            </ion-button>
+            <ion-button expand="block" router-link="/records" fill="outline" size="default">
+              <ion-icon slot="start" :icon="listOutline" />
+              Registros de demonstração
+            </ion-button>
+          </div>
         </section>
       </div>
     </ion-content>
@@ -77,6 +84,7 @@ import {
   serverOutline,
   downloadOutline,
   listOutline,
+  colorPaletteOutline,
 } from 'ionicons/icons'
 import PageHeader from '../../../components/ui/PageHeader.vue'
 import ConnectionStatus from '../../../components/feedback/ConnectionStatus.vue'
@@ -123,6 +131,12 @@ import ConnectionStatus from '../../../components/feedback/ConnectionStatus.vue'
   color: var(--color-text-secondary);
   margin-bottom: var(--space-3);
   padding: 0 var(--space-4);
+}
+
+.demo-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 ion-item {

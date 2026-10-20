@@ -15,45 +15,51 @@
     </PageHeader>
     <ion-content class="ion-padding">
       <form class="form-container" @submit.prevent="handleSave">
-        <div class="form-field">
-          <label for="title" class="form-label">
-            Título <span class="required">*</span>
-          </label>
-          <ion-input
-            id="title"
-            v-model="form.title"
-            placeholder="Nome do registro"
-            :class="{ 'has-error': errors.title }"
-            @ion-blur="validateField('title')"
-          />
-          <p v-if="errors.title" class="field-error">{{ errors.title }}</p>
+        <div class="form-card">
+          <div class="form-row">
+            <label for="title" class="form-row-label">
+              Título <span class="required">*</span>
+            </label>
+            <input
+              id="title"
+              v-model="form.title"
+              type="text"
+              class="form-row-input"
+              :class="{ 'has-error': errors.title }"
+              placeholder="Nome do registro"
+              @blur="validateField('title')"
+            />
+          </div>
+          <div class="form-divider" />
+          <div class="form-row">
+            <label for="description" class="form-row-label">Descrição</label>
+            <textarea
+              id="description"
+              v-model="form.description"
+              class="form-row-input form-row-textarea"
+              placeholder="Opcional"
+              rows="3"
+              maxlength="500"
+              @blur="validateField('description')"
+            />
+          </div>
         </div>
+        <p v-if="errors.title" class="field-error">{{ errors.title }}</p>
+        <p v-if="errors.description" class="field-error">{{ errors.description }}</p>
+        <p class="form-hint">{{ form.description.length }} / 500</p>
 
-        <div class="form-field">
-          <label for="description" class="form-label">Descrição</label>
-          <ion-textarea
-            id="description"
-            v-model="form.description"
-            placeholder="Detalhes sobre o registro (opcional)"
-            :auto-grow="true"
-            :rows="3"
-            :maxlength="500"
-            :counter="true"
-            @ion-blur="validateField('description')"
-          />
-          <p v-if="errors.description" class="field-error">{{ errors.description }}</p>
-        </div>
-
-        <div v-if="isEditing" class="form-field">
-          <label class="form-label">Estado</label>
-          <ion-segment v-model="form.status">
-            <ion-segment-button value="active">
-              <ion-label>Ativo</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="archived">
-              <ion-label>Arquivado</ion-label>
-            </ion-segment-button>
-          </ion-segment>
+        <div v-if="isEditing" class="form-card">
+          <div class="form-row">
+            <label class="form-row-label">Estado</label>
+            <ion-segment v-model="form.status" class="form-segment">
+              <ion-segment-button value="active">
+                <ion-label>Ativo</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="archived">
+                <ion-label>Arquivado</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </div>
         </div>
 
         <div v-if="saveError" class="save-error">
@@ -76,8 +82,6 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   IonPage,
   IonContent,
-  IonInput,
-  IonTextarea,
   IonButton,
   IonButtons,
   IonSegment,
@@ -174,30 +178,82 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
-.form-field {
-  margin-bottom: var(--space-4);
+.form-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-3);
 }
 
-.form-label {
-  display: block;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-1);
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--space-3) var(--space-4);
+  min-height: var(--touch-target-min);
+}
+
+.form-row-label {
+  flex-shrink: 0;
+  width: 90px;
+  font-size: var(--font-size-input);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-primary);
+  padding-top: 2px;
+  line-height: 1.4;
 }
 
 .required {
   color: var(--color-error);
 }
 
-.has-error {
-  --border-color: var(--color-error);
+.form-row-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: var(--font-size-input);
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
+  line-height: 1.4;
+  padding: 0;
+}
+
+.form-row-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.form-row-input.has-error {
+  color: var(--color-error);
+}
+
+.form-row-textarea {
+  resize: none;
+}
+
+.form-divider {
+  height: 1px;
+  background: var(--color-border-light);
+  margin-left: var(--space-4);
+}
+
+.form-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: right;
+  padding: 0 var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.form-segment {
+  flex: 1;
 }
 
 .field-error {
   font-size: var(--font-size-xs);
   color: var(--color-error);
-  margin-top: var(--space-1);
+  padding: 0 var(--space-4);
+  margin-top: calc(-1 * var(--space-2));
+  margin-bottom: var(--space-2);
 }
 
 .save-error {

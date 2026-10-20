@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router'
+import { createRouter, createWebHashHistory } from '@ionic/vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import TabsLayout from '../layouts/TabsLayout.vue'
 
@@ -33,6 +33,11 @@ const routes: RouteRecordRaw[] = [
         props: true,
       },
       {
+        path: 'showcase',
+        name: 'showcase',
+        component: () => import('../../features/example-records/pages/ShowcasePage.vue'),
+      },
+      {
         path: 'settings',
         name: 'settings',
         component: () => import('../../features/example-records/pages/SettingsPage.vue'),
@@ -42,7 +47,7 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes,
 })
 
