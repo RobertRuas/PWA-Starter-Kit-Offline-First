@@ -38,6 +38,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../../features/example-records/pages/ShowcasePage.vue'),
       },
       {
+        path: 'showcase/form',
+        name: 'showcase-form',
+        component: () => import('../../features/example-records/pages/ShowcaseFormPage.vue'),
+      },
+      {
         path: 'settings',
         name: 'settings',
         component: () => import('../../features/example-records/pages/SettingsPage.vue'),

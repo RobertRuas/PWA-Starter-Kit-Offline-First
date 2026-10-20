@@ -78,91 +78,10 @@
           <p class="form-caption">
             Campos com font-size 16px para evitar zoom no iOS Safari.
           </p>
-          <ion-button expand="block" fill="outline" @click="showFormComponents = true">
+          <ion-button expand="block" fill="outline" router-link="/showcase/form">
             <ion-icon slot="start" :icon="listOutline" />
             Ver todos os componentes de formulário
           </ion-button>
-        </section>
-
-        <section v-if="showFormComponents" class="showcase-section">
-          <div class="modal-overlay" @click="showFormComponents = false">
-            <div class="modal-content" @click.stop>
-              <div class="modal-header">
-                <h2>Todos os componentes de formulário</h2>
-                <ion-button fill="clear" size="small" @click="showFormComponents = false">
-                  <ion-icon slot="icon-only" :icon="closeOutline" />
-                </ion-button>
-              </div>
-
-              <div class="form-card">
-                <div class="form-row">
-                  <label class="form-row-label">Text input</label>
-                  <input type="text" class="form-row-input" placeholder="Texto simples" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Email</label>
-                  <input type="email" class="form-row-input" placeholder="email@example.com" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Número</label>
-                  <input type="number" class="form-row-input" placeholder="123" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Telefone</label>
-                  <input type="tel" class="form-row-input" placeholder="(11) 99999-9999" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Data</label>
-                  <input type="date" class="form-row-input" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Hora</label>
-                  <input type="time" class="form-row-input" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Textarea</label>
-                  <textarea class="form-row-input form-row-textarea" placeholder="Texto longo..." rows="3" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Select</label>
-                  <select class="form-row-input">
-                    <option>Opção 1</option>
-                    <option>Opção 2</option>
-                    <option>Opção 3</option>
-                  </select>
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Checkbox</label>
-                  <input type="checkbox" class="form-row-checkbox" />
-                </div>
-                <div class="form-divider" />
-                <div class="form-row form-row-radio">
-                  <label class="form-row-label">Radio</label>
-                  <div class="radio-group">
-                    <label class="radio-option">
-                      <input type="radio" name="demo-radio" /> Opção A
-                    </label>
-                    <label class="radio-option">
-                      <input type="radio" name="demo-radio" /> Opção B
-                    </label>
-                  </div>
-                </div>
-                <div class="form-divider" />
-                <div class="form-row">
-                  <label class="form-row-label">Password</label>
-                  <input type="password" class="form-row-input" placeholder="••••••••" />
-                </div>
-              </div>
-            </div>
-          </div>
         </section>
 
         <section class="showcase-section">
@@ -297,7 +216,6 @@ import {
   shieldCheckmarkOutline,
   trashOutline,
   listOutline,
-  closeOutline,
 } from 'ionicons/icons'
 import PageHeader from '../../../components/ui/PageHeader.vue'
 import ConnectionStatus from '../../../components/feedback/ConnectionStatus.vue'
@@ -306,7 +224,6 @@ import EmptyState from '../../../components/feedback/EmptyState.vue'
 import ErrorState from '../../../components/feedback/ErrorState.vue'
 
 const selectedSegment = ref('all')
-const showFormComponents = ref(false)
 
 const demoForm = reactive({
   name: '',
@@ -494,80 +411,5 @@ ion-item p {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-inverse);
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: flex-end;
-  z-index: 1000;
-  overflow-y: auto;
-}
-
-.modal-content {
-  width: 100%;
-  max-height: 90vh;
-  background: var(--color-background);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  overflow-y: auto;
-  padding: var(--space-4);
-  flex-shrink: 0;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-4);
-}
-
-.modal-header h2 {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  margin: 0;
-}
-
-.form-row-checkbox {
-  width: 20px;
-  height: 20px;
-  margin: 0;
-}
-
-.form-row-radio {
-  align-items: flex-start;
-}
-
-.radio-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.radio-option {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  cursor: pointer;
-  font-size: var(--font-size-base);
-}
-
-.radio-option input {
-  width: 20px;
-  height: 20px;
-  margin: 0;
-}
-
-select.form-row-input {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23424242' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right var(--space-2) center;
-  padding-right: 32px;
 }
 </style>
