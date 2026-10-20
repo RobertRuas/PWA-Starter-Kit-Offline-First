@@ -59,6 +59,13 @@ ion-toolbar {
   --background: var(--color-surface);
   --color: var(--color-text-primary);
   --border-color: var(--color-border);
+  --padding-start: var(--space-4);
+  --padding-end: var(--space-4);
+}
+
+ion-title {
+  padding-inline-start: var(--space-4);
+  padding-inline-end: var(--space-4);
 }
 
 ion-tab-bar {

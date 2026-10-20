@@ -125,13 +125,27 @@ import ConnectionStatus from '../../../components/feedback/ConnectionStatus.vue'
   padding: 0 var(--space-4);
 }
 
+ion-item {
+  --padding-top: var(--space-2);
+  --padding-bottom: var(--space-2);
+}
+
+ion-item ion-icon[slot='start'] {
+  margin-top: 2px;
+  margin-inline-end: var(--space-3);
+  font-size: 22px;
+  align-self: flex-start;
+}
+
 ion-item h3 {
   font-size: var(--font-size-base) !important;
   font-weight: var(--font-weight-medium) !important;
+  margin-bottom: 2px !important;
 }
 
 ion-item p {
   font-size: var(--font-size-sm) !important;
   color: var(--color-text-muted) !important;
+  line-height: var(--line-height-snug) !important;
 }
 </style>
