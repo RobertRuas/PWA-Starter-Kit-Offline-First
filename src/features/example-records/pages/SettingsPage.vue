@@ -32,16 +32,72 @@
             </ion-label>
           </ion-item>
           <ion-item button @click="handleExport">
-            <ion-icon :icon="downloadOutline" slot="start" color="primary" />
+            <ion-icon slot="start" :icon="downloadOutline" color="primary" />
             <ion-label>Exportar dados</ion-label>
           </ion-item>
           <ion-item button @click="triggerImport">
-            <ion-icon :icon="pushOutline" slot="start" color="primary" />
+            <ion-icon slot="start" :icon="pushOutline" color="primary" />
             <ion-label>Importar dados</ion-label>
           </ion-item>
           <ion-item button @click="confirmClearData">
-            <ion-icon :icon="trashOutline" slot="start" color="danger" />
+            <ion-icon slot="start" :icon="trashOutline" color="danger" />
             <ion-label color="danger">Apagar dados de demonstração</ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-list lines="inset">
+          <ion-list-header>
+            <ion-label>Armazenamento</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>
+              <h3>Espaço utilizado</h3>
+              <p>{{ storageUsage }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Persistência</h3>
+              <p>{{ storagePersisted ? 'Dados protegidos contra limpeza automática' : 'Dados podem ser removidos pelo navegador' }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item v-if="!storagePersisted" button @click="handleRequestPersistence">
+            <ion-icon slot="start" :icon="shieldCheckmarkOutline" color="primary" />
+            <ion-label>Solicitar persistência</ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-list lines="inset">
+          <ion-list-header>
+            <ion-label>Diagnóstico</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>
+              <h3>Versão da aplicação</h3>
+              <p>0.1.0</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Esquema do banco</h3>
+              <p>Versão 1</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Estado da rede</h3>
+              <p>{{ isOnline ? 'Conectado' : 'Sem conexão' }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h3>Operações pendentes</h3>
+              <p>{{ pendingOps }} na fila de sincronização</p>
+            </ion-label>
+          </ion-item>
+          <ion-item button @click="copyDiagnostics">
+            <ion-icon slot="start" :icon="copyOutline" color="primary" />
+            <ion-label>Copiar informações de diagnóstico</ion-label>
           </ion-item>
         </ion-list>
 
@@ -53,11 +109,6 @@
             <ion-label>
               <h3>{{ appConfig.name }}</h3>
               <p>{{ appConfig.description }}</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p>Versão 0.1.0</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -97,16 +148,33 @@ import {
   alertController,
   toastController,
 } from '@ionic/vue'
-import { downloadOutline, pushOutline, trashOutline } from 'ionicons/icons'
+import {
+  downloadOutline,
+  pushOutline,
+  trashOutline,
+  shieldCheckmarkOutline,
+  copyOutline,
+} from 'ionicons/icons'
 import PageHeader from '../../../components/ui/PageHeader.vue'
 import { appConfig } from '../../../app/config/app.config'
 import { usePreferencesStore } from '../../../stores/preferences'
+import { useConnectivity } from '../../../core/network/connectivity'
 import { exampleRecordRepository } from '../../../core/database/repositories/example-record.repository'
 import { exportAllData, downloadAsJson } from '../../../core/storage/export'
 import { importData } from '../../../core/storage/import'
+import { syncQueue } from '../../../core/sync/queue'
+import {
+  getStorageEstimate,
+  requestPersistentStorage,
+  formatBytes,
+} from '../../../core/storage/storage-manager'
 
 const preferencesStore = usePreferencesStore()
+const { isOnline } = useConnectivity()
 const recordCount = ref(0)
+const pendingOps = ref(0)
+const storageUsage = ref('Calculando...')
+const storagePersisted = ref(false)
 const fileInput = ref<HTMLInputElement>()
 const currentTheme = ref(preferencesStore.theme)
 
@@ -116,6 +184,62 @@ function handleThemeChange(event: CustomEvent) {
 
 async function loadCounts() {
   recordCount.value = await exampleRecordRepository.count()
+  pendingOps.value = await syncQueue.pendingCount()
+}
+
+async function loadStorageInfo() {
+  const estimate = await getStorageEstimate()
+  if (estimate) {
+    storageUsage.value = `${formatBytes(estimate.usage)} de ${formatBytes(estimate.quota)} (${estimate.percentUsed.toFixed(1)}%)`
+    storagePersisted.value = estimate.persisted
+  } else {
+    storageUsage.value = 'Informação não disponível'
+  }
+}
+
+async function handleRequestPersistence() {
+  const granted = await requestPersistentStorage()
+  storagePersisted.value = granted
+  const toast = await toastController.create({
+    message: granted
+      ? 'Persistência concedida. Seus dados estão protegidos.'
+      : 'O navegador não concedeu persistência neste momento.',
+    duration: 3000,
+    color: granted ? 'success' : 'warning',
+  })
+  await toast.present()
+}
+
+async function copyDiagnostics() {
+  const estimate = await getStorageEstimate()
+  const info = [
+    `Aplicação: ${appConfig.name} v0.1.0`,
+    `Esquema do banco: v1`,
+    `Rede: ${isOnline.value ? 'online' : 'offline'}`,
+    `Registros: ${recordCount.value}`,
+    `Operações pendentes: ${pendingOps.value}`,
+    `Armazenamento: ${estimate ? formatBytes(estimate.usage) + ' de ' + formatBytes(estimate.quota) : 'N/A'}`,
+    `Persistência: ${estimate?.persisted ? 'sim' : 'não'}`,
+    `User-Agent: ${navigator.userAgent}`,
+    `Data: ${new Date().toISOString()}`,
+  ].join('\n')
+
+  try {
+    await navigator.clipboard.writeText(info)
+    const toast = await toastController.create({
+      message: 'Informações copiadas para a área de transferência.',
+      duration: 2000,
+      color: 'success',
+    })
+    await toast.present()
+  } catch {
+    const toast = await toastController.create({
+      message: 'Não foi possível copiar. Tente novamente.',
+      duration: 2000,
+      color: 'danger',
+    })
+    await toast.present()
+  }
 }
 
 async function handleExport() {
@@ -196,7 +320,10 @@ async function confirmClearData() {
   await alert.present()
 }
 
-onMounted(loadCounts)
+onMounted(() => {
+  loadCounts()
+  loadStorageInfo()
+})
 </script>
 
 <style scoped>

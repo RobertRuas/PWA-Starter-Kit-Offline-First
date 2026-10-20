@@ -4,13 +4,13 @@
       <template #actions>
         <ion-buttons slot="end">
           <ion-button router-link="/records/new">
-            <ion-icon :icon="addOutline" slot="icon-only" />
+            <ion-icon slot="icon-only" :icon="addOutline" />
           </ion-button>
         </ion-buttons>
       </template>
     </PageHeader>
     <ion-content>
-      <ion-refresher slot="fixed" @ionRefresh="handleRefresh">
+      <ion-refresher slot="fixed" @ion-refresh="handleRefresh">
         <ion-refresher-content />
       </ion-refresher>
 
@@ -49,7 +49,7 @@
           </ion-item>
           <ion-item-options side="end">
             <ion-item-option color="danger" @click="confirmDelete(record)">
-              <ion-icon :icon="trashOutline" slot="icon-only" />
+              <ion-icon slot="icon-only" :icon="trashOutline" />
             </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>

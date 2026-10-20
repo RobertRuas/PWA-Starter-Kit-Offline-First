@@ -14,7 +14,7 @@
       </template>
     </PageHeader>
     <ion-content class="ion-padding">
-      <form @submit.prevent="handleSave" class="form-container">
+      <form class="form-container" @submit.prevent="handleSave">
         <div class="form-field">
           <label for="title" class="form-label">
             Título <span class="required">*</span>

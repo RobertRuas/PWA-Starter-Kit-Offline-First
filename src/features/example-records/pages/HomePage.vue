@@ -15,28 +15,28 @@
           <h2 class="section-title">Funcionalidades</h2>
           <ion-list lines="none">
             <ion-item>
-              <ion-icon :icon="phonePortraitOutline" slot="start" color="primary" />
+              <ion-icon slot="start" :icon="phonePortraitOutline" color="primary" />
               <ion-label>
                 <h3>Mobile-first</h3>
                 <p>Interface compacta otimizada para telas pequenas</p>
               </ion-label>
             </ion-item>
             <ion-item>
-              <ion-icon :icon="cloudOfflineOutline" slot="start" color="primary" />
+              <ion-icon slot="start" :icon="cloudOfflineOutline" color="primary" />
               <ion-label>
                 <h3>Offline-first</h3>
                 <p>Funciona sem internet após o primeiro carregamento</p>
               </ion-label>
             </ion-item>
             <ion-item>
-              <ion-icon :icon="serverOutline" slot="start" color="primary" />
+              <ion-icon slot="start" :icon="serverOutline" color="primary" />
               <ion-label>
                 <h3>Dados locais</h3>
                 <p>IndexedDB com Dexie.js para persistência estruturada</p>
               </ion-label>
             </ion-item>
             <ion-item>
-              <ion-icon :icon="downloadOutline" slot="start" color="primary" />
+              <ion-icon slot="start" :icon="downloadOutline" color="primary" />
               <ion-label>
                 <h3>Exportação e importação</h3>
                 <p>Backup e recuperação dos dados do dispositivo</p>
@@ -52,7 +52,7 @@
             <strong>Registros</strong> para testar a persistência local.
           </p>
           <ion-button expand="block" router-link="/records" fill="outline" size="default">
-            <ion-icon :icon="listOutline" slot="start" />
+            <ion-icon slot="start" :icon="listOutline" />
             Ver registros de demonstração
           </ion-button>
         </section>

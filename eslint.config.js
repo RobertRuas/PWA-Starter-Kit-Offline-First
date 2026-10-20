@@ -9,6 +9,12 @@ export default [
   },
   ...pluginVue.configs['flat/recommended'],
   {
+    files: ['**/*.vue'],
+    rules: {
+      'vue/no-deprecated-slot-attribute': 'off',
+    },
+  },
+  {
     files: ['**/*.ts'],
     languageOptions: {
       parser: tsParser,
