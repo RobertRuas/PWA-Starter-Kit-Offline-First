@@ -99,12 +99,31 @@ ion-item {
   font-size: var(--font-size-base);
 }
 
+ion-item ion-icon[slot='start'] {
+  margin-inline-end: var(--space-3);
+  font-size: 22px;
+}
+
+ion-badge {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+}
+
 ion-card {
   --background: var(--color-surface);
   --color: var(--color-text-primary);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   margin: var(--space-2) var(--space-4);
+}
+
+ion-card-header {
+  padding: var(--space-4) var(--space-4) var(--space-2);
+}
+
+ion-card-content {
+  padding: var(--space-2) var(--space-4) var(--space-4);
 }
 
 ion-button {
