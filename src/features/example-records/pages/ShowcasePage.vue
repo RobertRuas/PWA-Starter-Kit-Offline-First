@@ -506,6 +506,7 @@ ion-item p {
   display: flex;
   align-items: flex-end;
   z-index: 1000;
+  overflow-y: auto;
 }
 
 .modal-content {
@@ -515,6 +516,7 @@ ion-item p {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   overflow-y: auto;
   padding: var(--space-4);
+  flex-shrink: 0;
 }
 
 .modal-header {
