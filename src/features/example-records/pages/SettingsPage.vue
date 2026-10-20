@@ -159,6 +159,7 @@ import PageHeader from '../../../components/ui/PageHeader.vue'
 import { appConfig } from '../../../app/config/app.config'
 import { usePreferencesStore } from '../../../stores/preferences'
 import { useConnectivity } from '../../../core/network/connectivity'
+import { useErrorToast } from '../../../composables/useErrorToast'
 import { exampleRecordRepository } from '../../../core/database/repositories/example-record.repository'
 import { exportAllData, downloadAsJson } from '../../../core/storage/export'
 import { importData } from '../../../core/storage/import'
@@ -171,6 +172,7 @@ import {
 
 const preferencesStore = usePreferencesStore()
 const { isOnline } = useConnectivity()
+const { showError, showSuccess } = useErrorToast()
 const recordCount = ref(0)
 const pendingOps = ref(0)
 const storageUsage = ref('Calculando...')
@@ -233,12 +235,7 @@ async function copyDiagnostics() {
     })
     await toast.present()
   } catch {
-    const toast = await toastController.create({
-      message: 'Não foi possível copiar. Tente novamente.',
-      duration: 2000,
-      color: 'danger',
-    })
-    await toast.present()
+    await showError('Não foi possível copiar. Tente novamente.', 2000)
   }
 }
 
@@ -247,19 +244,9 @@ async function handleExport() {
     const data = await exportAllData()
     const filename = `pwa-starter-export-${new Date().toISOString().slice(0, 10)}.json`
     downloadAsJson(data, filename)
-    const toast = await toastController.create({
-      message: 'Dados exportados com sucesso.',
-      duration: 2000,
-      color: 'success',
-    })
-    await toast.present()
+    await showSuccess('Dados exportados com sucesso.')
   } catch {
-    const toast = await toastController.create({
-      message: 'Falha ao exportar dados.',
-      duration: 3000,
-      color: 'danger',
-    })
-    await toast.present()
+    await showError('Falha ao exportar dados.')
   }
 }
 
@@ -279,19 +266,11 @@ async function handleFileSelected(event: Event) {
 
   if (result.success) {
     await loadCounts()
-    const toast = await toastController.create({
-      message: `Importação concluída: ${result.imported} importados, ${result.skipped} já existentes.`,
-      duration: 3000,
-      color: 'success',
-    })
-    await toast.present()
+    await showSuccess(
+      `Importação concluída: ${result.imported} importados, ${result.skipped} já existentes.`
+    )
   } else {
-    const toast = await toastController.create({
-      message: result.errors[0] || 'Falha na importação.',
-      duration: 4000,
-      color: 'danger',
-    })
-    await toast.present()
+    await showError(result.errors[0] || 'Falha na importação.')
   }
 }
 
@@ -308,11 +287,7 @@ async function confirmClearData() {
         handler: async () => {
           await exampleRecordRepository.clear()
           await loadCounts()
-          const toast = await toastController.create({
-            message: 'Dados de demonstração removidos.',
-            duration: 2000,
-          })
-          await toast.present()
+          await showSuccess('Dados de demonstração removidos.', 2000)
         },
       },
     ],

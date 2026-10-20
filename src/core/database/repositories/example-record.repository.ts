@@ -1,7 +1,7 @@
 import { db, type ExampleRecord } from '../db'
 
 function generateId(): string {
-  return crypto.randomUUID()
+  return globalThis.crypto.randomUUID()
 }
 
 function now(): string {
