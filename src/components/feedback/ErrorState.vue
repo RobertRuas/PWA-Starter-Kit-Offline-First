@@ -69,7 +69,7 @@ async function copyToClipboard() {
 }
 
 .error-icon {
-  font-size: 56px;
+  font-size: 64px;
   color: var(--color-error);
   margin-bottom: var(--space-2);
 }

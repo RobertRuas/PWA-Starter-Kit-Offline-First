@@ -28,12 +28,12 @@
           <div class="form-divider" />
           <div class="form-row">
             <label class="form-row-label">Data</label>
-            <input type="date" class="form-row-input" />
+            <input type="date" class="form-row-input" placeholder="DD/MM/YYYY" />
           </div>
           <div class="form-divider" />
           <div class="form-row">
             <label class="form-row-label">Hora</label>
-            <input type="time" class="form-row-input" />
+            <input type="time" class="form-row-input" placeholder="HH:MM" />
           </div>
           <div class="form-divider" />
           <div class="form-row">
@@ -105,18 +105,18 @@ import PageHeader from '../../../components/ui/PageHeader.vue'
 
 .form-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   padding: var(--space-3) var(--space-4);
   min-height: var(--touch-target-min);
+  gap: var(--space-3);
 }
 
 .form-row-label {
   flex-shrink: 0;
-  width: 80px;
-  font-size: var(--font-size-input);
+  width: 70px;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
   color: var(--color-text-primary);
-  padding-top: 2px;
   line-height: 1.4;
 }
 
@@ -134,6 +134,7 @@ import PageHeader from '../../../components/ui/PageHeader.vue'
 
 .form-row-input::placeholder {
   color: var(--color-text-muted);
+  font-size: 12px;
 }
 
 .form-row-textarea {
