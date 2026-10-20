@@ -13,7 +13,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
     } catch {
       // localStorage indisponível
     }
-    return 'system'
+    return 'light'
   }
 
   function applyTheme(value: ThemePreference) {
