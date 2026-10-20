@@ -2,7 +2,18 @@
   <div class="error-state">
     <ion-icon :icon="alertCircleOutline" class="error-icon" />
     <h3>{{ title }}</h3>
-    <p>{{ description }}</p>
+    <div class="error-message-wrapper">
+      <p>{{ description }}</p>
+      <ion-button
+        v-if="description"
+        title="Copiar mensagem"
+        size="small"
+        fill="clear"
+        @click="copyToClipboard"
+      >
+        <ion-icon slot="icon-only" :icon="copyOutline" />
+      </ion-button>
+    </div>
     <ion-button v-if="retryLabel" size="small" fill="outline" @click="$emit('retry')">
       {{ retryLabel }}
     </ion-button>
@@ -11,10 +22,10 @@
 </template>
 
 <script setup lang="ts">
-import { IonIcon, IonButton } from '@ionic/vue'
-import { alertCircleOutline } from 'ionicons/icons'
+import { IonIcon, IonButton, toastController } from '@ionic/vue'
+import { alertCircleOutline, copyOutline } from 'ionicons/icons'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
     description?: string
@@ -30,6 +41,20 @@ withDefaults(
 defineEmits<{
   retry: []
 }>()
+
+async function copyToClipboard() {
+  try {
+    await navigator.clipboard.writeText(props.description)
+    const toast = await toastController.create({
+      message: 'Mensagem copiada!',
+      duration: 2000,
+      color: 'success',
+    })
+    await toast.present()
+  } catch (err) {
+    console.error('Erro ao copiar:', err)
+  }
+}
 </script>
 
 <style scoped>
@@ -56,10 +81,23 @@ defineEmits<{
   margin: 0;
 }
 
+.error-message-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
 .error-state p {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   margin: 0;
   max-width: 280px;
+}
+
+.error-message-wrapper ion-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  min-width: unset;
 }
 </style>
