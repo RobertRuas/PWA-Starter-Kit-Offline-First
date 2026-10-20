@@ -1,0 +1,108 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+}
+
+/* iOS Safari: inputs >=16px para evitar zoom automático */
+input,
+select,
+textarea {
+  font-size: var(--font-size-input);
+}
+
+/* Foco visível */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Respeitar preferência de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Ionic overrides para design system próprio */
+ion-content {
+  --background: var(--color-background);
+}
+
+ion-toolbar {
+  --background: var(--color-surface);
+  --color: var(--color-text-primary);
+  --border-color: var(--color-border);
+}
+
+ion-tab-bar {
+  --background: var(--color-surface);
+  --color: var(--color-text-muted);
+  --color-selected: var(--color-primary);
+  --border: 1px solid var(--color-border);
+}
+
+ion-item {
+  --background: var(--color-surface);
+  --color: var(--color-text-primary);
+  --border-color: var(--color-border-light);
+  --padding-start: var(--space-4);
+  --padding-end: var(--space-4);
+  --min-height: var(--touch-target-min);
+  font-size: var(--font-size-base);
+}
+
+ion-card {
+  --background: var(--color-surface);
+  --color: var(--color-text-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin: var(--space-2) var(--space-4);
+}
+
+ion-button {
+  --border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  min-height: var(--touch-target-min);
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
