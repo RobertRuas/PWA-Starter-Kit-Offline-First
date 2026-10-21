@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/PWA-Starter-Kit-Offline-First/',
   plugins: [
     vue(),
     VitePWA({
