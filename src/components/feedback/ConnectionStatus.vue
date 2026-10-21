@@ -1,8 +1,17 @@
 <template>
-  <div class="connection-status" :class="{ offline: !isOnline }">
-    <ion-icon :icon="isOnline ? cloudDoneOutline : cloudOfflineOutline" />
-    <span class="connection-label">{{ isOnline ? 'Online' : 'Offline' }}</span>
-  </div>
+  <span
+    class="connection-status"
+    :class="{ 'connection-status--offline': !isOnline || !isServerReachable }"
+  >
+    <ion-icon
+      :icon="isOnline && isServerReachable ? cloudDoneOutline : cloudOfflineOutline"
+      class="connection-status__icon"
+      aria-hidden="true"
+    />
+    <span class="connection-status__label">
+      {{ isOnline && isServerReachable ? 'Online' : 'Offline' }}
+    </span>
+  </span>
 </template>
 
 <script setup lang="ts">
@@ -10,27 +19,36 @@ import { IonIcon } from '@ionic/vue'
 import { cloudDoneOutline, cloudOfflineOutline } from 'ionicons/icons'
 import { useConnectivity } from '../../core/network/connectivity'
 
-const { isOnline } = useConnectivity()
+const { isOnline, isServerReachable } = useConnectivity()
 </script>
 
 <style scoped>
 .connection-status {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  font-size: var(--font-size-sm);
-  color: var(--color-success);
-  padding: var(--space-1) var(--space-2);
+  gap: 4px;
+  padding: 2px 8px;
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-success) 10%, transparent);
-}
-
-.connection-status.offline {
-  color: var(--color-warning);
-  background: color-mix(in srgb, var(--color-warning) 10%, transparent);
-}
-
-.connection-label {
+  font-size: 11px;
   font-weight: var(--font-weight-medium);
+  color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 10%, transparent);
+  margin-inline-end: 8px;
+  transition:
+    color 0.3s,
+    background 0.3s;
+}
+
+.connection-status--offline {
+  color: var(--color-text-muted);
+  background: color-mix(in srgb, var(--color-text-muted) 10%, transparent);
+}
+
+.connection-status__icon {
+  font-size: 14px;
+}
+
+.connection-status__label {
+  line-height: 1;
 }
 </style>
