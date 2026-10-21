@@ -23,7 +23,31 @@ const routes: RouteRecordRaw[] = [
         path: 'settings',
         component: () => import('../pages/SettingsPage.vue'),
       },
+      {
+        path: 'examples/data-table',
+        component: () => import('../pages/examples/DataTablePage.vue'),
+      },
+      {
+        path: 'examples/image-gallery',
+        component: () => import('../pages/examples/ImageGalleryPage.vue'),
+      },
+      {
+        path: 'examples/store-gallery',
+        component: () => import('../pages/examples/StoreGalleryPage.vue'),
+      },
+      {
+        path: 'examples/item-detail',
+        component: () => import('../pages/examples/ItemDetailPage.vue'),
+      },
     ],
+  },
+  {
+    path: '/examples/login',
+    component: () => import('../pages/examples/LoginPage.vue'),
+  },
+  {
+    path: '/examples/signup',
+    component: () => import('../pages/examples/SignupPage.vue'),
   },
 ];
 
