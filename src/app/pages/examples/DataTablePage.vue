@@ -210,8 +210,8 @@ function statusColor(status: string): string {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
   flex-wrap: wrap;
 }
 
@@ -238,7 +238,7 @@ function statusColor(status: string): string {
 
 .data-table th,
 .data-table td {
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--space-2) var(--space-4);
   text-align: left;
   border-bottom: 1px solid var(--color-border);
 }

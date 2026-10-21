@@ -205,7 +205,7 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-6);
 }
 
 .product-image__icon {
@@ -214,13 +214,13 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 
 .discount-badge {
   position: absolute;
-  top: var(--spacing-sm);
-  left: var(--spacing-sm);
+  top: var(--space-2);
+  left: var(--space-2);
   font-weight: 700;
 }
 
 .product-info {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--space-8);
 }
 
 .product-brand {
@@ -233,7 +233,7 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 
 .product-name {
   font-size: var(--font-size-xl);
-  margin: var(--spacing-xs) 0 var(--spacing-sm);
+  margin: var(--space-1) 0 var(--space-2);
   color: var(--color-text-primary);
   line-height: 1.3;
 }
@@ -241,8 +241,8 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 .product-rating {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 .stars {
@@ -252,7 +252,7 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 
 .star {
   font-size: 16px;
-  color: var(--color-text-disabled);
+  color: var(--color-text-muted);
 }
 
 .star--filled {
@@ -267,8 +267,8 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 .product-price {
   display: flex;
   align-items: baseline;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 .price-current {
@@ -279,7 +279,7 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 
 .price-original {
   font-size: var(--font-size-base);
-  color: var(--color-text-disabled);
+  color: var(--color-text-muted);
   text-decoration: line-through;
 }
 
@@ -287,23 +287,23 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: 1.6;
-  margin: 0 0 var(--spacing-lg);
+  margin: 0 0 var(--space-6);
 }
 
 .trust-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  gap: var(--space-4);
+  padding: var(--space-4);
   background: var(--color-surface);
   border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-6);
 }
 
 .trust-badge {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--space-1);
   font-size: var(--font-size-xs);
   color: var(--color-success);
 }
@@ -314,23 +314,23 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 
 .section-title {
   font-size: var(--font-size-lg);
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 var(--space-2);
   color: var(--color-text-primary);
 }
 
 .features-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 var(--spacing-lg);
+  margin: 0 0 var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--space-2);
 }
 
 .features-list li {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--space-2);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
@@ -344,12 +344,12 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 .specs-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
 }
 
 .spec-item {
-  padding: var(--spacing-sm);
+  padding: var(--space-2);
   background: var(--color-surface);
   border-radius: var(--radius-sm);
 }
@@ -370,7 +370,7 @@ const discount = Math.round((1 - product.price / product.originalPrice) * 100);
 .action-bar {
   position: sticky;
   bottom: 0;
-  padding: var(--spacing-md) 0;
+  padding: var(--space-4) 0;
   background: var(--color-background);
 }
 

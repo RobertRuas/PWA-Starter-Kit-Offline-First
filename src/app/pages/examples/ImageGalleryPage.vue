@@ -123,13 +123,13 @@ const selectedImage = ref<GalleryImage | null>(null);
 .gallery-subtitle {
   color: var(--color-text-secondary);
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-6);
 }
 
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--spacing-md);
+  gap: var(--space-4);
 }
 
 .gallery-item {
@@ -177,7 +177,7 @@ const selectedImage = ref<GalleryImage | null>(null);
 }
 
 .gallery-item__info {
-  padding: var(--spacing-sm);
+  padding: var(--space-2);
 }
 
 .gallery-item__info h3 {
@@ -199,7 +199,7 @@ const selectedImage = ref<GalleryImage | null>(null);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-6);
 }
 
 .detail-icon {
@@ -208,18 +208,18 @@ const selectedImage = ref<GalleryImage | null>(null);
 
 .detail-title {
   font-size: var(--font-size-xl);
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 var(--space-2);
   color: var(--color-text-primary);
 }
 
 .detail-description {
   color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-lg);
+  margin: 0 0 var(--space-6);
 }
 
 .detail-meta {
   display: flex;
-  gap: var(--spacing-lg);
+  gap: var(--space-6);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }

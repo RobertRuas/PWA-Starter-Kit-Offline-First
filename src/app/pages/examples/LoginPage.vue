@@ -186,7 +186,7 @@ function handleLogin() {
 .login-container {
   max-width: 400px;
   margin: 0 auto;
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: var(--space-8) var(--space-4);
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -204,7 +204,7 @@ function handleLogin() {
   border-radius: var(--radius-full);
   background: var(--color-surface);
   color: var(--color-text-primary);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-6);
   transition: background var(--transition-fast);
 }
 
@@ -214,7 +214,7 @@ function handleLogin() {
 
 .login-header {
   text-align: center;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--space-8);
 }
 
 .login-logo {
@@ -225,14 +225,14 @@ function handleLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto var(--spacing-md);
+  margin: 0 auto var(--space-4);
   color: white;
   font-size: 28px;
 }
 
 .login-title {
   font-size: var(--font-size-2xl);
-  margin: 0 0 var(--spacing-xs);
+  margin: 0 0 var(--space-1);
   color: var(--color-text-primary);
 }
 
@@ -245,13 +245,13 @@ function handleLogin() {
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--space-4);
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: var(--space-1);
 }
 
 .input-label {
@@ -265,7 +265,7 @@ function handleLogin() {
   align-items: center;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 0 var(--spacing-sm);
+  padding: 0 var(--space-2);
   background: var(--color-surface);
   transition: border-color var(--transition-fast);
 }
@@ -305,7 +305,7 @@ function handleLogin() {
 .remember-me {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--space-1);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   cursor: pointer;
@@ -322,7 +322,7 @@ function handleLogin() {
 }
 
 .login-button {
-  margin-top: var(--spacing-sm);
+  margin-top: var(--space-2);
   --border-radius: var(--radius-md);
   font-weight: 600;
 }
@@ -330,8 +330,8 @@ function handleLogin() {
 .divider {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  margin: var(--spacing-lg) 0;
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
 }
 
 .divider::before,
@@ -349,7 +349,7 @@ function handleLogin() {
 
 .social-buttons {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--space-2);
 }
 
 .social-btn {
@@ -359,8 +359,8 @@ function handleLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
@@ -381,7 +381,7 @@ function handleLogin() {
   text-align: center;
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  margin-top: var(--spacing-lg);
+  margin-top: var(--space-6);
 }
 
 .signup-prompt a {

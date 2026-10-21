@@ -144,7 +144,7 @@ function renderStars(rating: number): { filled: number; empty: number } {
 .store-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-md);
+  gap: var(--space-4);
 }
 
 .store-card {
@@ -174,8 +174,8 @@ function renderStars(rating: number): { filled: number; empty: number } {
 
 .store-card__category {
   position: absolute;
-  top: var(--spacing-sm);
-  right: var(--spacing-sm);
+  top: var(--space-2);
+  right: var(--space-2);
   --background: rgba(255, 255, 255, 0.9);
   --color: #333;
   height: 24px;
@@ -183,13 +183,13 @@ function renderStars(rating: number): { filled: number; empty: number } {
 }
 
 .store-card__body {
-  padding: var(--spacing-md);
+  padding: var(--space-4);
 }
 
 .store-card__name {
   font-size: var(--font-size-lg);
   font-weight: 600;
-  margin: 0 0 var(--spacing-xs);
+  margin: 0 0 var(--space-1);
   color: var(--color-text-primary);
 }
 
@@ -197,12 +197,12 @@ function renderStars(rating: number): { filled: number; empty: number } {
   display: flex;
   align-items: center;
   gap: 1px;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--space-2);
 }
 
 .star {
   font-size: 14px;
-  color: var(--color-text-disabled);
+  color: var(--color-text-muted);
 }
 
 .star--filled {
@@ -212,20 +212,20 @@ function renderStars(rating: number): { filled: number; empty: number } {
 .store-card__rating-text {
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
-  margin-left: var(--spacing-xs);
+  margin-left: var(--space-1);
 }
 
 .store-card__description {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-md);
+  margin: 0 0 var(--space-4);
   line-height: 1.5;
 }
 
 .store-card__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: var(--space-4);
 }
 
 .store-card__meta-item {
