@@ -181,6 +181,30 @@
           </div>
         </section>
 
+        <section class="showcase-section">
+          <h2 class="section-title">Páginas de exemplo</h2>
+          <div class="example-links">
+            <ion-button expand="block" fill="outline" router-link="/examples/data-table">
+              Tabela de dados
+            </ion-button>
+            <ion-button expand="block" fill="outline" router-link="/examples/image-gallery">
+              Galeria de imagens
+            </ion-button>
+            <ion-button expand="block" fill="outline" router-link="/examples/store-gallery">
+              Galeria de loja
+            </ion-button>
+            <ion-button expand="block" fill="outline" router-link="/examples/item-detail">
+              Detalhe de item
+            </ion-button>
+            <ion-button expand="block" fill="outline" router-link="/examples/login">
+              Login
+            </ion-button>
+            <ion-button expand="block" fill="outline" router-link="/examples/signup">
+              Cadastro
+            </ion-button>
+          </div>
+        </section>
+
       </div>
     </ion-content>
   </ion-page>
