@@ -15,7 +15,7 @@
 
 ## Interface visual
 
-- **Framework de UI**: PrimeVue 5.x com tema Aura (licença MIT). Usar exclusivamente componentes oficiais do PrimeVue.
+- **Framework de UI**: PrimeVue 4.x com tema Aura (licença MIT). Usar exclusivamente componentes oficiais do PrimeVue.
 - **Não utilizar**: Tailwind CSS, Bootstrap, Vuetify ou outras bibliotecas de UI externas.
 - **Tema**: `@primeuix/themes/aura` configurado em `src/main.ts`.
 - **Ícones**: PrimeIcons (`primeicons`).

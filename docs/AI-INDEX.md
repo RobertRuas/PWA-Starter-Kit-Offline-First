@@ -37,7 +37,7 @@
 
 ## Framework de UI
 
-- **PrimeVue 5.x** com tema Aura (`@primeuix/themes/aura`), licença MIT.
+- **PrimeVue 4.x** com tema Aura (`@primeuix/themes/aura`), licença MIT.
 - **PrimeIcons** para ícones.
 - Não utilizar Tailwind CSS, Bootstrap, Vuetify ou outras bibliotecas de UI.
 - Usar variáveis CSS do PrimeVue (`var(--p-*)`) para estilização.

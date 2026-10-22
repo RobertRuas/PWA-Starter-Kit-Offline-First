@@ -44,7 +44,7 @@ onMounted(async () => {
 <style scoped>
 .update-banner {
   position: fixed;
-  bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(52px + env(safe-area-inset-bottom, 0px));
   left: 1rem;
   right: 1rem;
   background: var(--p-primary-color);

@@ -160,8 +160,8 @@ function navigateTo(path: string) {
   top: 0;
   left: 0;
   right: 0;
-  height: 56px;
-  padding: 0 1rem;
+  height: 48px;
+  padding: 0 0.75rem;
   background: var(--p-surface-0);
   border-bottom: 1px solid var(--p-surface-200);
   z-index: 100;
@@ -169,7 +169,7 @@ function navigateTo(path: string) {
 
 .topbar-title {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
   flex: 1;
 }
 
@@ -186,7 +186,7 @@ function navigateTo(path: string) {
 
 .drawer-app-name {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 /* Desktop sidebar - hidden on mobile */
@@ -214,7 +214,7 @@ function navigateTo(path: string) {
 
 .sidebar-app-name {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 /* Navigation */
@@ -237,11 +237,11 @@ function navigateTo(path: string) {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.625rem 0.75rem;
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
   border-radius: var(--p-border-radius);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   color: var(--p-text-color);
   transition: background 0.15s;
 }
@@ -257,16 +257,16 @@ function navigateTo(path: string) {
 }
 
 .nav-icon {
-  font-size: 1.1rem;
-  width: 1.25rem;
+  font-size: 1rem;
+  width: 1.125rem;
   text-align: center;
 }
 
 /* Main content */
 .app-main {
   flex: 1;
-  padding-top: 56px;
-  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  padding-top: 48px;
+  padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
   min-width: 0;
   overflow-y: auto;
 }
@@ -289,8 +289,8 @@ function navigateTo(path: string) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 0.5rem 0;
+  gap: 1px;
+  padding: 0.375rem 0;
   background: none;
   border: none;
   color: var(--p-text-muted-color);
@@ -303,11 +303,11 @@ function navigateTo(path: string) {
 }
 
 .bottom-tab-icon {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
 }
 
 .bottom-tab-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 
 /* Desktop: show sidebar, hide topbar and bottom tabs */
