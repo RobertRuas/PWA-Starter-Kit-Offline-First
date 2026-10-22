@@ -2,6 +2,12 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import AppLayout from '../layouts/AppLayout.vue'
 
+declare module 'vue-router' {
+  interface RouteMeta {
+    breadcrumb?: string
+  }
+}
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -15,47 +21,62 @@ const routes: RouteRecordRaw[] = [
         path: 'home',
         name: 'home',
         component: () => import('../../features/example-records/pages/HomePage.vue'),
+        meta: { breadcrumb: 'Inicio' },
+      },
+      {
+        path: 'projects',
+        name: 'projects',
+        component: () => import('../../features/example-records/pages/RecordsPage.vue'),
+        meta: { breadcrumb: 'Projetos' },
       },
       {
         path: 'records',
         name: 'records',
         component: () => import('../../features/example-records/pages/RecordsPage.vue'),
+        meta: { breadcrumb: 'Registros' },
       },
       {
         path: 'records/new',
         name: 'record-new',
         component: () => import('../../features/example-records/pages/RecordFormPage.vue'),
+        meta: { breadcrumb: 'Novo registro' },
       },
       {
         path: 'records/:id',
         name: 'record-edit',
         component: () => import('../../features/example-records/pages/RecordFormPage.vue'),
         props: true,
+        meta: { breadcrumb: 'Editar registro' },
       },
       {
         path: 'showcase',
         name: 'showcase',
         component: () => import('../../features/example-records/pages/ShowcasePage.vue'),
+        meta: { breadcrumb: 'Vitrine' },
       },
       {
         path: 'showcase/form',
         name: 'showcase-form',
         component: () => import('../../features/example-records/pages/ShowcaseFormPage.vue'),
+        meta: { breadcrumb: 'Formulario' },
       },
       {
         path: 'settings',
         name: 'settings',
         component: () => import('../../features/example-records/pages/SettingsPage.vue'),
+        meta: { breadcrumb: 'Ajustes' },
       },
       {
         path: 'examples/dashboard',
         name: 'example-dashboard',
         component: () => import('../pages/examples/DashboardPage.vue'),
+        meta: { breadcrumb: 'Dashboard' },
       },
       {
         path: 'examples/contacts',
         name: 'example-contacts',
         component: () => import('../pages/examples/ContactsPage.vue'),
+        meta: { breadcrumb: 'Contactos' },
       },
     ],
   },
@@ -74,6 +95,9 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  scrollBehavior() {
+    return { top: 0 }
+  },
 })
 
 export default router

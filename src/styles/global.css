@@ -17,6 +17,14 @@ body {
   background: var(--p-surface-ground);
   font-size: 0.875rem;
   line-height: 1.5;
+  overscroll-behavior-y: none;
+  overflow: hidden;
+}
+
+#app {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 /* iOS Safari: inputs >=16px to prevent auto-zoom on focus */
