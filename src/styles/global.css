@@ -13,6 +13,7 @@ html {
 body {
   min-height: 100vh;
   min-height: 100dvh;
+  background: var(--p-surface-ground);
 }
 
 /* iOS Safari: inputs >=16px to prevent auto-zoom */
@@ -20,6 +21,11 @@ input,
 select,
 textarea {
   font-size: 16px;
+}
+
+/* PrimeVue Password wrapper fix for p-fluid */
+.p-fluid .p-password {
+  width: 100%;
 }
 
 /* Respect reduced motion preference */

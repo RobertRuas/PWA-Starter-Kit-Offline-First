@@ -1,5 +1,5 @@
 <template>
-  <Tag :value="statusText" :icon="statusIcon" :severity="statusSeverity" />
+  <Tag :value="statusText" :icon="statusIcon" :severity="statusSeverity" rounded />
 </template>
 
 <script setup lang="ts">

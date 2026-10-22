@@ -3,6 +3,7 @@
   <ConfirmDialog />
   <router-view />
   <div v-if="updateAvailable" class="update-banner">
+    <i class="pi pi-refresh" />
     <span>Nova versao disponivel</span>
     <Button size="small" @click="applyUpdate">Atualizar</Button>
     <Button size="small" text @click="dismissUpdate">Depois</Button>
@@ -44,19 +45,30 @@ onMounted(async () => {
 .update-banner {
   position: fixed;
   bottom: calc(56px + env(safe-area-inset-bottom, 0px));
-  left: 16px;
-  right: 16px;
+  left: 1rem;
+  right: 1rem;
   background: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
-  padding: 12px 16px;
+  padding: 0.75rem 1rem;
   border-radius: var(--p-border-radius);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .update-banner span {
   flex: 1;
+  font-weight: 500;
+}
+
+@media (min-width: 992px) {
+  .update-banner {
+    bottom: 1rem;
+    left: auto;
+    right: 1rem;
+    max-width: 400px;
+  }
 }
 </style>

@@ -6,57 +6,62 @@
       back-href="/records"
     >
       <template #actions>
-        <Button label="Salvar" text :disabled="saving" @click="handleSave" />
+        <Button label="Salvar" icon="pi pi-check" size="small" :disabled="saving" @click="handleSave" />
       </template>
     </PageHeader>
-    <div style="max-width: 600px; margin: 0 auto; padding: 1rem;">
-      <form @submit.prevent="handleSave">
-        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;">
-          <div class="p-fluid">
-            <label for="title">Titulo *</label>
-            <InputText
-              id="title"
-              v-model="form.title"
-              placeholder="Nome do registro"
-              :invalid="!!errors.title"
-              @blur="validateField('title')"
-            />
-            <small v-if="errors.title" class="p-error">{{ errors.title }}</small>
-          </div>
 
-          <div class="p-fluid">
-            <label for="description">Descricao</label>
-            <Textarea
-              id="description"
-              v-model="form.description"
-              placeholder="Opcional"
-              rows="3"
-              :maxlength="500"
-              @blur="validateField('description')"
-            />
-            <small v-if="errors.description" class="p-error">{{ errors.description }}</small>
-            <small style="display: block; text-align: right; color: var(--p-text-muted-color);">{{ form.description.length }} / 500</small>
-          </div>
+    <div class="form-content">
+      <Card>
+        <template #content>
+          <form class="record-form" @submit.prevent="handleSave">
+            <div class="p-fluid form-grid">
+              <div class="form-field">
+                <label for="title">Titulo *</label>
+                <InputText
+                  id="title"
+                  v-model="form.title"
+                  placeholder="Nome do registro"
+                  :invalid="!!errors.title"
+                  @blur="validateField('title')"
+                />
+                <small v-if="errors.title" class="p-error">{{ errors.title }}</small>
+              </div>
 
-          <div v-if="isEditing" class="p-fluid">
-            <label>Estado</label>
-            <SelectButton
-              v-model="form.status"
-              :options="statusOptions"
-              option-label="label"
-              option-value="value"
-            />
-          </div>
-        </div>
+              <div class="form-field">
+                <label for="description">Descricao</label>
+                <Textarea
+                  id="description"
+                  v-model="form.description"
+                  placeholder="Descricao opcional"
+                  rows="4"
+                  :maxlength="500"
+                  @blur="validateField('description')"
+                />
+                <small v-if="errors.description" class="p-error">{{ errors.description }}</small>
+                <small class="char-count">{{ form.description.length }} / 500</small>
+              </div>
 
-        <Message v-if="saveError" severity="error" :closable="false">
-          {{ saveError }}
-        </Message>
+              <div v-if="isEditing" class="form-field">
+                <label>Estado</label>
+                <SelectButton
+                  v-model="form.status"
+                  :options="statusOptions"
+                  option-label="label"
+                  option-value="value"
+                />
+              </div>
+            </div>
 
-        <Message v-if="savedLocally" severity="success" :closable="false">
-          Salvo neste dispositivo
-        </Message>
-      </form>
+            <Message v-if="saveError" severity="error" :closable="false" style="margin-top: 1rem;">
+              {{ saveError }}
+            </Message>
+
+            <Message v-if="savedLocally" severity="success" :closable="false" style="margin-top: 1rem;">
+              Salvo neste dispositivo
+            </Message>
+          </form>
+        </template>
+      </Card>
     </div>
   </div>
 </template>
@@ -65,6 +70,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Button from 'primevue/button'
+import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import SelectButton from 'primevue/selectbutton'
@@ -155,3 +161,46 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style scoped>
+.form-content {
+  padding: 0 1.5rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.record-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.form-field label {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  color: var(--p-text-muted-color);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .form-content {
+    padding: 0 1rem 2rem;
+  }
+}
+</style>

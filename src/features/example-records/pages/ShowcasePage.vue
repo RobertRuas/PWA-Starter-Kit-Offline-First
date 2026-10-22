@@ -1,27 +1,28 @@
 <template>
   <div>
-    <PageHeader title="Demonstracao" show-back back-href="/home" />
-    <div style="max-width: 600px; margin: 0 auto; padding: 1rem 1rem 2rem;">
+    <PageHeader title="Vitrine" subtitle="Componentes e padroes do kit" />
 
-      <Card style="margin-bottom: 1.5rem;">
+    <div class="showcase-content">
+      <!-- Feedback components -->
+      <Card>
         <template #title>Componentes de feedback</template>
         <template #content>
-          <div style="margin-bottom: 1rem;">
-            <div style="font-weight: 500; margin-bottom: 0.5rem;">Status de conexao</div>
+          <div class="showcase-section">
+            <div class="showcase-label">Status de conexao</div>
             <ConnectionStatus />
           </div>
 
-          <div style="margin-bottom: 1rem;">
-            <div style="font-weight: 500; margin-bottom: 0.5rem;">Status de salvamento local</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <div class="showcase-section">
+            <div class="showcase-label">Status de salvamento local</div>
+            <div class="showcase-row">
               <LocalSaveStatus status="saved" />
               <LocalSaveStatus status="saving" />
               <LocalSaveStatus status="error" />
             </div>
           </div>
 
-          <div style="margin-bottom: 1rem;">
-            <div style="font-weight: 500; margin-bottom: 0.5rem;">Estado vazio</div>
+          <div class="showcase-section">
+            <div class="showcase-label">Estado vazio</div>
             <EmptyState
               title="Nenhum item"
               description="Exemplo de estado vazio para listas sem conteudo."
@@ -29,8 +30,8 @@
             />
           </div>
 
-          <div>
-            <div style="font-weight: 500; margin-bottom: 0.5rem;">Estado de erro</div>
+          <div class="showcase-section">
+            <div class="showcase-label">Estado de erro</div>
             <ErrorState
               title="Falha ao carregar"
               description="Exemplo de estado de erro com botao de nova tentativa."
@@ -41,19 +42,77 @@
         </template>
       </Card>
 
-      <Card style="margin-bottom: 1.5rem;">
-        <template #title>Formulario PrimeVue</template>
+      <!-- Buttons -->
+      <Card>
+        <template #title>Botoes</template>
         <template #content>
-          <div class="p-fluid" style="display: flex; flex-direction: column; gap: 1rem;">
-            <div>
+          <div class="showcase-buttons">
+            <div class="showcase-row">
+              <Button label="Primario" />
+              <Button label="Secundario" severity="secondary" />
+              <Button label="Sucesso" severity="success" />
+            </div>
+            <div class="showcase-row">
+              <Button label="Outline" outlined />
+              <Button label="Text" text />
+              <Button label="Danger" severity="danger" />
+            </div>
+            <div class="showcase-row">
+              <Button label="Pequeno" size="small" />
+              <Button label="Grande" size="large" />
+              <Button label="Desabilitado" disabled />
+            </div>
+            <div class="showcase-row">
+              <Button icon="pi pi-check" rounded />
+              <Button icon="pi pi-bookmark" rounded outlined />
+              <Button icon="pi pi-search" rounded text />
+              <Button icon="pi pi-trash" rounded severity="danger" />
+            </div>
+          </div>
+        </template>
+      </Card>
+
+      <!-- Tags -->
+      <Card>
+        <template #title>Tags e badges</template>
+        <template #content>
+          <div class="showcase-row">
+            <Tag value="Sucesso" severity="success" rounded />
+            <Tag value="Info" severity="info" rounded />
+            <Tag value="Aviso" severity="warn" rounded />
+            <Tag value="Perigo" severity="danger" rounded />
+            <Tag value="Secundario" severity="secondary" rounded />
+          </div>
+        </template>
+      </Card>
+
+      <!-- Messages -->
+      <Card>
+        <template #title>Mensagens</template>
+        <template #content>
+          <div class="showcase-messages">
+            <Message severity="success" :closable="false">Operacao realizada com sucesso.</Message>
+            <Message severity="info" :closable="false">Informacao relevante para o usuario.</Message>
+            <Message severity="warn" :closable="false">Atencao: verifique os dados antes de prosseguir.</Message>
+            <Message severity="error" :closable="false">Erro ao processar a solicitacao.</Message>
+          </div>
+        </template>
+      </Card>
+
+      <!-- Form sample -->
+      <Card>
+        <template #title>Formulario</template>
+        <template #content>
+          <div class="p-fluid showcase-form">
+            <div class="form-field">
               <label for="demo-name">Nome</label>
               <InputText id="demo-name" v-model="demoForm.name" placeholder="Digite seu nome" />
             </div>
-            <div>
+            <div class="form-field">
               <label for="demo-email">Email</label>
               <InputText id="demo-email" v-model="demoForm.email" placeholder="exemplo@email.com" />
             </div>
-            <div>
+            <div class="form-field">
               <label for="demo-notes">Notas</label>
               <Textarea id="demo-notes" v-model="demoForm.notes" placeholder="Opcional" rows="2" />
             </div>
@@ -68,35 +127,27 @@
         </template>
       </Card>
 
-      <Card style="margin-bottom: 1.5rem;">
-        <template #title>Botoes</template>
-        <template #content>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <Button label="Primario" />
-            <Button label="Outline" outlined />
-            <Button label="Text" text />
-            <Button label="Danger" severity="danger" />
-            <Button label="Small" size="small" outlined />
-            <Button label="Desabilitado" disabled />
-          </div>
-        </template>
-      </Card>
-
-      <Card style="margin-bottom: 1.5rem;">
+      <!-- List with badges -->
+      <Card>
         <template #title>Lista com badges</template>
         <template #content>
-          <div v-for="item in demoItems" :key="item.id" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid var(--p-content-border-color);">
-            <i :class="item.icon" style="font-size: 1.25rem; color: var(--p-primary-color);" />
-            <div style="flex: 1;">
-              <div style="font-weight: 500;">{{ item.title }}</div>
-              <div style="color: var(--p-text-muted-color); font-size: 0.875rem;">{{ item.subtitle }}</div>
+          <div class="showcase-list">
+            <div v-for="item in demoItems" :key="item.id" class="showcase-list-item">
+              <div class="showcase-list-icon-wrapper">
+                <i :class="item.icon" class="showcase-list-icon" />
+              </div>
+              <div class="showcase-list-text">
+                <div class="showcase-list-title">{{ item.title }}</div>
+                <div class="showcase-list-subtitle">{{ item.subtitle }}</div>
+              </div>
+              <Tag :value="item.badge" :severity="item.badgeSeverity" rounded />
             </div>
-            <Tag :value="item.badge" :severity="item.badgeSeverity" />
           </div>
         </template>
       </Card>
 
-      <Card style="margin-bottom: 1.5rem;">
+      <!-- Segments -->
+      <Card>
         <template #title>Segmentos</template>
         <template #content>
           <SelectButton
@@ -107,29 +158,6 @@
           />
         </template>
       </Card>
-
-      <Card style="margin-bottom: 1.5rem;">
-        <template #title>Card PrimeVue</template>
-        <template #subtitle>Subtitulo</template>
-        <template #content>
-          Conteudo do card com texto descritivo. Ideal para agrupar informacoes relacionadas.
-        </template>
-      </Card>
-
-      <Card style="margin-bottom: 1.5rem;">
-        <template #title>Paginas de exemplo</template>
-        <template #content>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <Button label="Tabela de dados" outlined @click="router.push('/examples/data-table')" />
-            <Button label="Galeria de imagens" outlined @click="router.push('/examples/image-gallery')" />
-            <Button label="Galeria de loja" outlined @click="router.push('/examples/store-gallery')" />
-            <Button label="Detalhe de item" outlined @click="router.push('/examples/item-detail')" />
-            <Button label="Login" outlined @click="router.push('/examples/login')" />
-            <Button label="Cadastro" outlined @click="router.push('/examples/signup')" />
-          </div>
-        </template>
-      </Card>
-
     </div>
   </div>
 </template>
@@ -143,6 +171,7 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Tag from 'primevue/tag'
+import Message from 'primevue/message'
 import SelectButton from 'primevue/selectbutton'
 import PageHeader from '../../../components/ui/PageHeader.vue'
 import ConnectionStatus from '../../../components/feedback/ConnectionStatus.vue'
@@ -176,3 +205,118 @@ function handleDemoRetry() {
   toast.add({ severity: 'info', summary: 'Exemplo: tentativa de recarregamento executada.', life: 2000 })
 }
 </script>
+
+<style scoped>
+.showcase-content {
+  padding: 0 1.5rem 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.showcase-section {
+  margin-bottom: 1.5rem;
+}
+
+.showcase-section:last-child {
+  margin-bottom: 0;
+}
+
+.showcase-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  color: var(--p-text-muted-color);
+}
+
+.showcase-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.showcase-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.showcase-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.showcase-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.form-field label {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.showcase-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.showcase-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+.showcase-list-item:last-child {
+  border-bottom: none;
+}
+
+.showcase-list-icon-wrapper {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--p-border-radius);
+  background: var(--p-primary-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.showcase-list-icon {
+  font-size: 1rem;
+  color: var(--p-primary-color);
+}
+
+.showcase-list-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.showcase-list-title {
+  font-weight: 600;
+}
+
+.showcase-list-subtitle {
+  color: var(--p-text-muted-color);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+  .showcase-content {
+    padding: 0 1rem 2rem;
+  }
+}
+</style>

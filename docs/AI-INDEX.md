@@ -4,9 +4,9 @@
 
 ### Alterar interface ou navegação
 - `src/app/router/index.ts` — Rotas da aplicação
-- `src/app/layouts/TabsLayout.vue` — Layout com abas de navegação
-- `src/components/` — Componentes reutilizáveis
-- `src/styles/tokens.css` — Tokens de design (cores, tipografia, espaçamento)
+- `src/app/layouts/AppLayout.vue` — Layout responsivo com sidebar (desktop) e bottom tabs (mobile)
+- `src/components/` — Componentes reutilizáveis (ui, feedback)
+- `src/styles/global.css` — Estilos globais mínimos (variáveis CSS do PrimeVue)
 
 ### Alterar dados ou persistência
 - `src/core/database/db.ts` — Esquema do banco (Dexie.js/IndexedDB)
@@ -34,6 +34,14 @@
 
 ### CI/CD
 - `.github/workflows/ci.yml` — Pipeline de integração contínua
+
+## Framework de UI
+
+- **PrimeVue 5.x** com tema Aura (`@primeuix/themes/aura`), licença MIT.
+- **PrimeIcons** para ícones.
+- Não utilizar Tailwind CSS, Bootstrap, Vuetify ou outras bibliotecas de UI.
+- Usar variáveis CSS do PrimeVue (`var(--p-*)`) para estilização.
+- Layout responsivo: `AppLayout.vue` com sidebar para desktop e bottom tabs para mobile.
 
 ## Regras
 - Ler `AGENTS.md` antes de qualquer alteração

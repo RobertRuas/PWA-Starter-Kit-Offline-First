@@ -1,60 +1,74 @@
 <template>
-  <div style="min-height: 100vh; padding: 2rem 1rem;">
-    <div style="max-width: 400px; margin: 0 auto; width: 100%;">
-      <Button icon="pi pi-arrow-left" text rounded @click="router.push('/home')" style="margin-bottom: 1rem;" />
+  <div class="auth-page">
+    <div class="auth-container">
+      <Button
+        icon="pi pi-arrow-left"
+        text
+        rounded
+        size="small"
+        class="auth-back"
+        @click="router.push('/home')"
+      />
 
-      <div style="margin-bottom: 2rem;">
-        <h1 style="margin: 0 0 0.25rem;">Criar conta</h1>
-        <p style="color: var(--p-text-muted-color); margin: 0;">Preencha os dados abaixo para comecar</p>
+      <div class="auth-header">
+        <h1 class="auth-title">Criar conta</h1>
+        <p class="auth-subtitle">Preencha os dados abaixo para comecar</p>
       </div>
 
-      <form style="display: flex; flex-direction: column; gap: 1rem;" @submit.prevent="handleSignup">
-        <div class="p-fluid">
-          <label for="signup-name">Nome completo</label>
-          <IconField>
-            <InputIcon class="pi pi-user" />
-            <InputText id="signup-name" v-model="name" placeholder="Seu nome" autocomplete="name" />
-          </IconField>
-        </div>
+      <form class="auth-form" @submit.prevent="handleSignup">
+        <div class="p-fluid form-grid">
+          <div class="form-field">
+            <label for="signup-name">Nome completo</label>
+            <IconField>
+              <InputIcon class="pi pi-user" />
+              <InputText id="signup-name" v-model="name" placeholder="Seu nome" autocomplete="name" />
+            </IconField>
+          </div>
 
-        <div class="p-fluid">
-          <label for="signup-email">E-mail</label>
-          <IconField>
-            <InputIcon class="pi pi-envelope" />
-            <InputText id="signup-email" v-model="email" type="email" placeholder="seu@email.com" autocomplete="email" />
-          </IconField>
-        </div>
+          <div class="form-field">
+            <label for="signup-email">E-mail</label>
+            <IconField>
+              <InputIcon class="pi pi-envelope" />
+              <InputText id="signup-email" v-model="email" type="email" placeholder="seu@email.com" autocomplete="email" />
+            </IconField>
+          </div>
 
-        <div class="p-fluid">
-          <label for="signup-password">Senha</label>
-          <Password id="signup-password" v-model="password" placeholder="Crie uma senha" toggle-mask autocomplete="new-password" />
-          <div v-if="password" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 1rem; margin-top: 0.5rem;">
-            <div v-for="rule in passwordRules" :key="rule.label" style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem;" :style="{ color: rule.valid ? 'var(--p-green-500)' : 'var(--p-text-muted-color)' }">
-              <i :class="rule.valid ? 'pi pi-check-circle' : 'pi pi-times-circle'" style="font-size: 0.875rem;" />
-              <span>{{ rule.label }}</span>
+          <div class="form-field">
+            <label for="signup-password">Senha</label>
+            <Password id="signup-password" v-model="password" placeholder="Crie uma senha" toggle-mask autocomplete="new-password" />
+            <div v-if="password" class="password-rules">
+              <div
+                v-for="rule in passwordRules"
+                :key="rule.label"
+                class="password-rule"
+                :class="{ valid: rule.valid }"
+              >
+                <i :class="rule.valid ? 'pi pi-check-circle' : 'pi pi-times-circle'" />
+                <span>{{ rule.label }}</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="p-fluid">
-          <label for="signup-confirm">Confirmar senha</label>
-          <Password id="signup-confirm" v-model="confirmPassword" placeholder="Repita a senha" toggle-mask :feedback="false" autocomplete="new-password" />
-          <small v-if="confirmPassword && !passwordsMatch" class="p-error">As senhas nao coincidem</small>
-        </div>
+          <div class="form-field">
+            <label for="signup-confirm">Confirmar senha</label>
+            <Password id="signup-confirm" v-model="confirmPassword" placeholder="Repita a senha" toggle-mask :feedback="false" autocomplete="new-password" />
+            <small v-if="confirmPassword && !passwordsMatch" class="p-error">As senhas nao coincidem</small>
+          </div>
 
-        <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
-          <Checkbox v-model="acceptTerms" :binary="true" input-id="terms" />
-          <label for="terms" style="color: var(--p-text-muted-color); font-size: 0.875rem;">
-            Li e aceito os <a href="#" @click.prevent style="color: var(--p-primary-color); text-decoration: none;">Termos de Uso</a> e a <a href="#" @click.prevent style="color: var(--p-primary-color); text-decoration: none;">Politica de Privacidade</a>
-          </label>
-        </div>
+          <div class="auth-check">
+            <Checkbox v-model="acceptTerms" :binary="true" input-id="terms" />
+            <label for="terms" class="terms-label">
+              Li e aceito os <a href="#" class="auth-link" @click.prevent>Termos de Uso</a> e a <a href="#" class="auth-link" @click.prevent>Politica de Privacidade</a>
+            </label>
+          </div>
 
-        <Button label="Criar conta" type="submit" :disabled="!isFormValid" />
+          <Button label="Criar conta" type="submit" :disabled="!isFormValid" />
+        </div>
       </form>
 
-      <p style="text-align: center; color: var(--p-text-muted-color); margin-top: 1.5rem; font-size: 0.875rem;">
+      <p class="auth-footer">
         Ja tem uma conta?
-        <a href="#" @click.prevent="router.push('/examples/login')" style="color: var(--p-primary-color); text-decoration: none; font-weight: 600;">Faca login</a>
+        <a href="#" class="auth-link-bold" @click.prevent="router.push('/examples/login')">Faca login</a>
       </p>
     </div>
   </div>
@@ -107,3 +121,108 @@ function handleSignup() {
   toast.add({ severity: 'success', summary: 'Conta criada com sucesso! (demo)', life: 2000 })
 }
 </script>
+
+<style scoped>
+.auth-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--p-surface-ground);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-back {
+  margin-bottom: 1rem;
+}
+
+.auth-header {
+  margin-bottom: 2rem;
+}
+
+.auth-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.auth-subtitle {
+  color: var(--p-text-muted-color);
+  margin: 0;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.form-field label {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.password-rules {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1rem;
+  margin-top: 0.375rem;
+}
+
+.password-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--p-text-muted-color);
+}
+
+.password-rule.valid {
+  color: var(--p-green-500);
+}
+
+.password-rule i {
+  font-size: 0.875rem;
+}
+
+.auth-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.terms-label {
+  color: var(--p-text-muted-color);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.auth-link {
+  color: var(--p-primary-color);
+  text-decoration: none;
+}
+
+.auth-footer {
+  text-align: center;
+  color: var(--p-text-muted-color);
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.auth-link-bold {
+  color: var(--p-primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+</style>

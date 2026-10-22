@@ -1,8 +1,9 @@
 <template>
   <Tag
     :value="isOnline && isServerReachable ? 'Online' : 'Offline'"
-    :icon="isOnline && isServerReachable ? 'pi pi-cloud' : 'pi pi-cloud-upload'"
+    :icon="isOnline && isServerReachable ? 'pi pi-wifi' : 'pi pi-cloud-upload'"
     :severity="isOnline && isServerReachable ? 'success' : 'secondary'"
+    rounded
   />
 </template>
 

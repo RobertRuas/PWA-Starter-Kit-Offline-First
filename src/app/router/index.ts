@@ -1,11 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import TabsLayout from '../layouts/TabsLayout.vue'
+import AppLayout from '../layouts/AppLayout.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: TabsLayout,
+    component: AppLayout,
     children: [
       {
         path: '',
@@ -48,24 +48,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../../features/example-records/pages/SettingsPage.vue'),
       },
       {
-        path: 'examples/data-table',
-        name: 'example-data-table',
-        component: () => import('../pages/examples/DataTablePage.vue'),
+        path: 'examples/dashboard',
+        name: 'example-dashboard',
+        component: () => import('../pages/examples/DashboardPage.vue'),
       },
       {
-        path: 'examples/image-gallery',
-        name: 'example-image-gallery',
-        component: () => import('../pages/examples/ImageGalleryPage.vue'),
-      },
-      {
-        path: 'examples/store-gallery',
-        name: 'example-store-gallery',
-        component: () => import('../pages/examples/StoreGalleryPage.vue'),
-      },
-      {
-        path: 'examples/item-detail',
-        name: 'example-item-detail',
-        component: () => import('../pages/examples/ItemDetailPage.vue'),
+        path: 'examples/contacts',
+        name: 'example-contacts',
+        component: () => import('../pages/examples/ContactsPage.vue'),
       },
     ],
   },
