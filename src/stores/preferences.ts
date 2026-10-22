@@ -18,11 +18,13 @@ export const usePreferencesStore = defineStore('preferences', () => {
 
   function applyTheme(value: ThemePreference) {
     const root = document.documentElement
+    let isDark = false
     if (value === 'system') {
-      root.removeAttribute('data-theme')
+      isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     } else {
-      root.setAttribute('data-theme', value)
+      isDark = value === 'dark'
     }
+    root.classList.toggle('p-dark', isDark)
   }
 
   function setTheme(value: ThemePreference) {
@@ -35,7 +37,6 @@ export const usePreferencesStore = defineStore('preferences', () => {
     applyTheme(value)
   }
 
-  // Aplicar tema ao inicializar
   applyTheme(theme.value)
 
   watch(theme, applyTheme)

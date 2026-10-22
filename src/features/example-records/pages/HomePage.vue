@@ -1,165 +1,60 @@
 <template>
-  <ion-page>
+  <div>
     <PageHeader title="PWA Starter Kit" />
-    <ion-content class="ion-padding">
-      <div class="home-container">
-        <section class="hero">
-          <h1 class="hero-title">PWA Starter Kit</h1>
-          <p class="hero-subtitle">
-            Base reutilizável para aplicações mobile-first, instaláveis e com dados locais.
-          </p>
-          <ConnectionStatus />
-        </section>
-
-        <section class="info-section">
-          <h2 class="section-title">Funcionalidades</h2>
-          <ion-list lines="none">
-            <ion-item>
-              <ion-icon slot="start" :icon="phonePortraitOutline" color="primary" />
-              <ion-label>
-                <h3>Mobile-first</h3>
-                <p>Interface compacta otimizada para telas pequenas</p>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-icon slot="start" :icon="cloudOfflineOutline" color="primary" />
-              <ion-label>
-                <h3>Offline-first</h3>
-                <p>Funciona sem internet após o primeiro carregamento</p>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-icon slot="start" :icon="serverOutline" color="primary" />
-              <ion-label>
-                <h3>Dados locais</h3>
-                <p>IndexedDB com Dexie.js para persistência estruturada</p>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-icon slot="start" :icon="downloadOutline" color="primary" />
-              <ion-label>
-                <h3>Exportação e importação</h3>
-                <p>Backup e recuperação dos dados do dispositivo</p>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-        </section>
-
-        <section class="info-section">
-          <h2 class="section-title">Demonstração</h2>
-          <p class="section-text">
-            Esta é a aplicação de demonstração do Starter Kit. Explore a vitrine
-            de componentes ou use a aba <strong>Registros</strong> para testar
-            a persistência local.
-          </p>
-          <div class="demo-buttons">
-            <ion-button expand="block" router-link="/showcase" fill="solid" size="default">
-              <ion-icon slot="start" :icon="colorPaletteOutline" />
-              Vitrine de componentes
-            </ion-button>
-            <ion-button expand="block" router-link="/records" fill="outline" size="default">
-              <ion-icon slot="start" :icon="listOutline" />
-              Registros de demonstração
-            </ion-button>
-          </div>
-        </section>
+    <div style="max-width: 600px; margin: 0 auto; padding: 1rem;">
+      <div style="text-align: center; padding: 1.5rem 0 1rem;">
+        <h1 style="margin-bottom: 0.5rem;">PWA Starter Kit</h1>
+        <p style="color: var(--p-text-muted-color); margin-bottom: 0.75rem;">
+          Base reutilizavel para aplicacoes mobile-first, instalaveis e com dados locais.
+        </p>
+        <ConnectionStatus />
       </div>
-    </ion-content>
-  </ion-page>
+
+      <Card style="margin-bottom: 1.5rem;">
+        <template #title>Funcionalidades</template>
+        <template #content>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div v-for="item in features" :key="item.title" style="display: flex; align-items: flex-start; gap: 0.75rem;">
+              <i :class="item.icon" style="font-size: 1.4rem; color: var(--p-primary-color); margin-top: 2px;" />
+              <div>
+                <div style="font-weight: 500;">{{ item.title }}</div>
+                <div style="color: var(--p-text-muted-color); font-size: 0.875rem;">{{ item.description }}</div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Card>
+
+      <Card style="margin-bottom: 1.5rem;">
+        <template #title>Demonstracao</template>
+        <template #content>
+          <p style="color: var(--p-text-muted-color); margin-bottom: 1rem;">
+            Esta e a aplicacao de demonstracao do Starter Kit. Explore a vitrine
+            de componentes ou use a aba Registros para testar a persistencia local.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <Button label="Vitrine de componentes" icon="pi pi-palette" @click="router.push('/showcase')" />
+            <Button label="Registros de demonstracao" icon="pi pi-list" outlined @click="router.push('/records')" />
+          </div>
+        </template>
+      </Card>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {
-  IonPage,
-  IonContent,
-  IonList,
-  IonItem,
-  IonIcon,
-  IonLabel,
-  IonButton,
-} from '@ionic/vue'
-import {
-  phonePortraitOutline,
-  cloudOfflineOutline,
-  serverOutline,
-  downloadOutline,
-  listOutline,
-  colorPaletteOutline,
-} from 'ionicons/icons'
+import { useRouter } from 'vue-router'
+import Card from 'primevue/card'
+import Button from 'primevue/button'
 import PageHeader from '../../../components/ui/PageHeader.vue'
 import ConnectionStatus from '../../../components/feedback/ConnectionStatus.vue'
+
+const router = useRouter()
+
+const features = [
+  { icon: 'pi pi-mobile', title: 'Mobile-first', description: 'Interface compacta otimizada para telas pequenas' },
+  { icon: 'pi pi-cloud', title: 'Offline-first', description: 'Funciona sem internet apos o primeiro carregamento' },
+  { icon: 'pi pi-database', title: 'Dados locais', description: 'IndexedDB com Dexie.js para persistencia estruturada' },
+  { icon: 'pi pi-download', title: 'Exportacao e importacao', description: 'Backup e recuperacao dos dados do dispositivo' },
+]
 </script>
-
-<style scoped>
-.home-container {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.hero {
-  text-align: center;
-  padding: var(--space-6) 0 var(--space-4);
-}
-
-.hero-title {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  margin-bottom: var(--space-2);
-}
-
-.hero-subtitle {
-  font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-3);
-}
-
-.info-section {
-  margin-bottom: var(--space-6);
-}
-
-.section-title {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-2);
-  padding: 0 var(--space-4);
-}
-
-.section-text {
-  font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-3);
-  padding: 0 var(--space-4);
-}
-
-.demo-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-ion-item {
-  --padding-top: var(--space-2);
-  --padding-bottom: var(--space-2);
-}
-
-ion-item ion-icon[slot='start'] {
-  margin-top: 2px;
-  margin-inline-end: var(--space-3);
-  font-size: 22px;
-  align-self: flex-start;
-}
-
-ion-item h3 {
-  font-size: var(--font-size-base) !important;
-  font-weight: var(--font-weight-medium) !important;
-  margin-bottom: 2px !important;
-}
-
-ion-item p {
-  font-size: var(--font-size-sm) !important;
-  color: var(--color-text-muted) !important;
-  line-height: var(--line-height-snug) !important;
-}
-</style>

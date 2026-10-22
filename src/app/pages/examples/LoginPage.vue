@@ -1,392 +1,79 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import {
-  IonPage,
-  IonContent,
-  IonInput,
-  IonButton,
-  IonIcon,
-  IonToast,
-} from '@ionic/vue';
-import {
-  lockClosedOutline,
-  mailOutline,
-  eyeOutline,
-  eyeOffOutline,
-  logoGoogle,
-  logoApple,
-  arrowBackOutline,
-} from 'ionicons/icons';
-import { useRouter } from 'vue-router';
+<template>
+  <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 2rem 1rem;">
+    <div style="max-width: 400px; margin: 0 auto; width: 100%;">
+      <Button icon="pi pi-arrow-left" text rounded @click="router.push('/home')" style="margin-bottom: 1rem;" />
 
-const router = useRouter();
-const email = ref('');
-const password = ref('');
-const showPassword = ref(false);
-const showToast = ref(false);
-const toastMessage = ref('');
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <i class="pi pi-lock" style="font-size: 2rem; padding: 1rem; border-radius: var(--p-border-radius); background: var(--p-primary-color); color: var(--p-primary-contrast-color); display: inline-block; margin-bottom: 1rem;" />
+        <h1 style="margin: 0 0 0.25rem;">Bem-vindo de volta</h1>
+        <p style="color: var(--p-text-muted-color); margin: 0;">Entre na sua conta para continuar</p>
+      </div>
+
+      <form style="display: flex; flex-direction: column; gap: 1rem;" @submit.prevent="handleLogin">
+        <div class="p-fluid">
+          <label for="login-email">E-mail</label>
+          <IconField>
+            <InputIcon class="pi pi-envelope" />
+            <InputText id="login-email" v-model="email" type="email" placeholder="seu@email.com" autocomplete="email" />
+          </IconField>
+        </div>
+
+        <div class="p-fluid">
+          <label for="login-password">Senha</label>
+          <Password id="login-password" v-model="password" placeholder="Sua senha" toggle-mask :feedback="false" autocomplete="current-password" />
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <Checkbox v-model="rememberMe" :binary="true" input-id="remember" />
+            <label for="remember" style="color: var(--p-text-muted-color); font-size: 0.875rem;">Lembrar de mim</label>
+          </div>
+          <a href="#" @click.prevent style="color: var(--p-primary-color); font-size: 0.875rem; text-decoration: none;">Esqueceu a senha?</a>
+        </div>
+
+        <Button label="Entrar" type="submit" />
+      </form>
+
+      <Divider align="center" style="margin: 1.5rem 0;">
+        <span style="color: var(--p-text-muted-color); font-size: 0.75rem;">ou continue com</span>
+      </Divider>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <Button label="Google" icon="pi pi-google" outlined style="flex: 1;" />
+        <Button label="Apple" icon="pi pi-apple" outlined style="flex: 1;" />
+      </div>
+
+      <p style="text-align: center; color: var(--p-text-muted-color); margin-top: 1.5rem; font-size: 0.875rem;">
+        Nao tem uma conta?
+        <a href="#" @click.prevent="router.push('/examples/signup')" style="color: var(--p-primary-color); text-decoration: none; font-weight: 600;">Cadastre-se</a>
+      </p>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useToast } from 'primevue/usetoast'
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import IconField from 'primevue/iconfield'
+import InputIcon from 'primevue/inputicon'
+import Password from 'primevue/password'
+import Checkbox from 'primevue/checkbox'
+import Divider from 'primevue/divider'
+
+const router = useRouter()
+const toast = useToast()
+const email = ref('')
+const password = ref('')
+const rememberMe = ref(false)
 
 function handleLogin() {
   if (!email.value || !password.value) {
-    toastMessage.value = 'Preencha todos os campos';
-    showToast.value = true;
-    return;
+    toast.add({ severity: 'warn', summary: 'Preencha todos os campos', life: 2000 })
+    return
   }
-  toastMessage.value = 'Login realizado com sucesso! (demo)';
-  showToast.value = true;
+  toast.add({ severity: 'success', summary: 'Login realizado com sucesso! (demo)', life: 2000 })
 }
 </script>
-
-<template>
-  <IonPage>
-    <IonContent
-      class="login-content"
-      :scroll-y="true"
-    >
-      <div class="login-container">
-        <button
-          class="back-button"
-          @click="router.push('/home')"
-        >
-          <IonIcon :icon="arrowBackOutline" />
-        </button>
-
-        <div class="login-header">
-          <div class="login-logo">
-            <IonIcon :icon="lockClosedOutline" />
-          </div>
-          <h1 class="login-title">
-            Bem-vindo de volta
-          </h1>
-          <p class="login-subtitle">
-            Entre na sua conta para continuar
-          </p>
-        </div>
-
-        <form
-          class="login-form"
-          @submit.prevent="handleLogin"
-        >
-          <div class="input-group">
-            <label
-              class="input-label"
-              for="login-email"
-            >E-mail</label>
-            <div class="input-wrapper">
-              <IonIcon
-                :icon="mailOutline"
-                class="input-icon"
-              />
-              <IonInput
-                id="login-email"
-                v-model="email"
-                type="email"
-                placeholder="seu@email.com"
-                class="custom-input"
-                autocomplete="email"
-              />
-            </div>
-          </div>
-
-          <div class="input-group">
-            <label
-              class="input-label"
-              for="login-password"
-            >Senha</label>
-            <div class="input-wrapper">
-              <IonIcon
-                :icon="lockClosedOutline"
-                class="input-icon"
-              />
-              <IonInput
-                id="login-password"
-                v-model="password"
-                :type="showPassword ? 'text' : 'password'"
-                placeholder="Sua senha"
-                class="custom-input"
-                autocomplete="current-password"
-              />
-              <button
-                type="button"
-                class="toggle-password"
-                @click="showPassword = !showPassword"
-              >
-                <IonIcon :icon="showPassword ? eyeOffOutline : eyeOutline" />
-              </button>
-            </div>
-          </div>
-
-          <div class="form-options">
-            <label class="remember-me">
-              <input type="checkbox">
-              <span>Lembrar de mim</span>
-            </label>
-            <a
-              href="#"
-              class="forgot-link"
-              @click.prevent
-            >Esqueceu a senha?</a>
-          </div>
-
-          <IonButton
-            expand="block"
-            type="submit"
-            class="login-button"
-          >
-            Entrar
-          </IonButton>
-        </form>
-
-        <div class="divider">
-          <span>ou continue com</span>
-        </div>
-
-        <div class="social-buttons">
-          <button
-            class="social-btn"
-            type="button"
-          >
-            <IonIcon :icon="logoGoogle" />
-            <span>Google</span>
-          </button>
-          <button
-            class="social-btn"
-            type="button"
-          >
-            <IonIcon :icon="logoApple" />
-            <span>Apple</span>
-          </button>
-        </div>
-
-        <p class="signup-prompt">
-          Não tem uma conta?
-          <a
-            href="#"
-            @click.prevent="router.push('/examples/signup')"
-          >Cadastre-se</a>
-        </p>
-      </div>
-
-      <IonToast
-        :is-open="showToast"
-        :message="toastMessage"
-        :duration="2000"
-        position="bottom"
-        @did-dismiss="showToast = false"
-      />
-    </IonContent>
-  </IonPage>
-</template>
-
-<style scoped>
-.login-content {
-  --background: var(--color-background);
-}
-
-.login-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: var(--spacing-xl) var(--spacing-md);
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.back-button {
-  all: unset;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: var(--color-surface);
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-lg);
-  transition: background var(--transition-fast);
-}
-
-.back-button:hover {
-  background: var(--color-surface-variant);
-}
-
-.login-header {
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-}
-
-.login-logo {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto var(--spacing-md);
-  color: white;
-  font-size: 28px;
-}
-
-.login-title {
-  font-size: var(--font-size-2xl);
-  margin: 0 0 var(--spacing-xs);
-  color: var(--color-text-primary);
-}
-
-.login-subtitle {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.input-label {
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text-primary);
-}
-
-.input-wrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 0 var(--spacing-sm);
-  background: var(--color-surface);
-  transition: border-color var(--transition-fast);
-}
-
-.input-wrapper:focus-within {
-  border-color: var(--color-primary);
-}
-
-.input-icon {
-  color: var(--color-text-secondary);
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.custom-input {
-  --padding-start: 8px;
-  --padding-end: 0;
-  --background: transparent;
-  flex: 1;
-}
-
-.toggle-password {
-  all: unset;
-  cursor: pointer;
-  color: var(--color-text-secondary);
-  font-size: 18px;
-  display: flex;
-  padding: 4px;
-}
-
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
-
-.remember-me input {
-  accent-color: var(--color-primary);
-}
-
-.forgot-link {
-  font-size: var(--font-size-sm);
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-.login-button {
-  margin-top: var(--spacing-sm);
-  --border-radius: var(--radius-md);
-  font-weight: 600;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  margin: var(--spacing-lg) 0;
-}
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  border-top: 1px solid var(--color-border);
-}
-
-.divider span {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  white-space: nowrap;
-}
-
-.social-buttons {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-.social-btn {
-  all: unset;
-  cursor: pointer;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  background: var(--color-surface);
-  transition: background var(--transition-fast);
-}
-
-.social-btn:hover {
-  background: var(--color-surface-variant);
-}
-
-.social-btn ion-icon {
-  font-size: 18px;
-}
-
-.signup-prompt {
-  text-align: center;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  margin-top: var(--spacing-lg);
-}
-
-.signup-prompt a {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: 600;
-}
-</style>
