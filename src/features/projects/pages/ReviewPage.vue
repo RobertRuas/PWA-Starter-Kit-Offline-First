@@ -30,12 +30,15 @@
           >
             <i class="pi pi-inbox" />
           </button>
+          <span v-if="selectionMode && selectedIds.size > 0" class="selection-count">
+            {{ selectedIds.size }} selecionadas
+          </span>
         </div>
         <div class="toolbar-right">
           <button class="tool-btn" title="Diminuir" @click="zoomOut">
             <i class="pi pi-minus" />
           </button>
-          <button class="tool-btn" title="Auto" @click="zoomAuto">
+          <button class="tool-btn" :class="{ active: autoZoom }" title="Auto" @click="zoomAuto">
             <i class="pi pi-arrows-h" />
           </button>
           <button class="tool-btn" title="Aumentar" @click="zoomIn">
@@ -51,20 +54,28 @@
       </div>
 
       <div v-else class="categories-list" :class="{ 'auto-zoom': autoZoom }">
-        <div v-for="cat in categories" :key="cat.id" class="category-section">
+        <div
+          v-for="cat in categories"
+          :key="cat.id"
+          class="category-section"
+          @dragover.prevent="onDragOver($event, cat.id)"
+          @dragleave="onDragLeave(cat.id)"
+          @drop.prevent="onDrop($event, cat.id)"
+          :class="{ 'drop-target': dragOverCategoryId === cat.id }"
+        >
           <div class="category-header">
             <span class="category-name">{{ cat.name }}</span>
             <Tag :value="`${categoryPhotos[cat.id]?.length ?? 0}`" rounded severity="secondary" />
           </div>
-          <div
-            class="category-grid"
-            :style="gridStyle"
-          >
+          <div class="category-grid" :style="gridStyle">
             <div
-              v-for="photo in (categoryPhotos[cat.id] ?? [])"
+              v-for="(photo, photoIdx) in (categoryPhotos[cat.id] ?? [])"
               :key="photo.id"
               class="review-thumb"
-              :class="{ selected: selectedIds.has(photo.id) }"
+              :class="{ selected: selectedIds.has(photo.id), dragging: dragPhotoId === photo.id }"
+              :draggable="!selectionMode"
+              @dragstart="onDragStart($event, photo, cat.id, photoIdx)"
+              @dragend="onDragEnd"
               @click="handlePhotoClick(photo, cat.id)"
             >
               <img :src="getThumbnailUrl(photo)" :alt="photo.filename" loading="lazy" />
@@ -72,8 +83,11 @@
                 <i :class="selectedIds.has(photo.id) ? 'pi pi-check-circle' : 'pi pi-circle'" />
               </div>
             </div>
-            <div v-if="!categoryPhotos[cat.id]?.length" class="empty-category">
-              Sem fotos
+            <div
+              v-if="!categoryPhotos[cat.id]?.length"
+              class="empty-category"
+            >
+              Arraste fotos aqui
             </div>
           </div>
         </div>
@@ -153,6 +167,10 @@ const viewerVisible = ref(false)
 const viewerPhotoId = ref('')
 const viewerCategoryId = ref('')
 
+const dragPhotoId = ref<string | null>(null)
+const dragSourceCategoryId = ref<string | null>(null)
+const dragOverCategoryId = ref<string | null>(null)
+
 const viewerPhotos = computed(() => {
   return categoryPhotos.value[viewerCategoryId.value] ?? []
 })
@@ -197,13 +215,66 @@ async function deleteSelected() {
 async function uncategorizeSelected() {
   const ids = Array.from(selectedIds.value)
   if (ids.length === 0) return
-  for (const id of ids) {
+  for (const photoId of ids) {
     const inboxPhotos = await projectRepository.getInboxPhotos(props.id)
-    await projectRepository.movePhoto(id, null, inboxPhotos.length)
+    await projectRepository.movePhoto(photoId, null, inboxPhotos.length)
   }
   selectedIds.value = new Set()
   showSuccess(`${ids.length} fotos movidas para inbox.`)
   await loadData()
+}
+
+function onDragStart(event: DragEvent, photo: Photo, categoryId: string, _index: number) {
+  if (!event.dataTransfer) return
+  dragPhotoId.value = photo.id
+  dragSourceCategoryId.value = categoryId
+  event.dataTransfer.effectAllowed = 'move'
+  event.dataTransfer.setData('text/plain', photo.id)
+}
+
+function onDragEnd() {
+  dragPhotoId.value = null
+  dragSourceCategoryId.value = null
+  dragOverCategoryId.value = null
+}
+
+function onDragOver(_event: DragEvent, categoryId: string) {
+  if (dragSourceCategoryId.value === categoryId) return
+  dragOverCategoryId.value = categoryId
+}
+
+function onDragLeave(categoryId: string) {
+  if (dragOverCategoryId.value === categoryId) {
+    dragOverCategoryId.value = null
+  }
+}
+
+async function onDrop(_event: DragEvent, targetCategoryId: string) {
+  dragOverCategoryId.value = null
+  const photoId = dragPhotoId.value
+  if (!photoId || dragSourceCategoryId.value === targetCategoryId) return
+
+  const targetPhotos = categoryPhotos.value[targetCategoryId] ?? []
+  const newOrder = targetPhotos.length
+
+  await projectRepository.movePhoto(photoId, targetCategoryId, newOrder)
+  await renumberCategory(targetCategoryId)
+  if (dragSourceCategoryId.value) {
+    await renumberCategory(dragSourceCategoryId.value)
+  }
+
+  dragPhotoId.value = null
+  dragSourceCategoryId.value = null
+  await loadData()
+}
+
+async function renumberCategory(categoryId: string) {
+  const photos = await projectRepository.getPhotosByCategory(categoryId)
+  for (let i = 0; i < photos.length; i++) {
+    if (photos[i].order !== i) {
+      await projectRepository.movePhoto(photos[i].id, categoryId, i)
+    }
+  }
 }
 
 function handlePhotoClick(photo: Photo, categoryId: string) {
@@ -288,6 +359,12 @@ onUnmounted(revokeUrls)
   gap: 2px;
 }
 
+.selection-count {
+  font-size: 0.75rem;
+  color: var(--p-primary-color);
+  margin-left: 0.25rem;
+}
+
 .tool-btn {
   display: flex;
   align-items: center;
@@ -341,6 +418,18 @@ onUnmounted(revokeUrls)
   gap: 1.5rem;
 }
 
+.category-section {
+  transition: outline-color 0.15s;
+  border-radius: var(--p-border-radius);
+  padding: 0.5rem;
+  margin: -0.5rem;
+}
+
+.category-section.drop-target {
+  outline: 2px dashed var(--p-primary-color);
+  background: var(--p-primary-50);
+}
+
 .category-header {
   display: flex;
   align-items: center;
@@ -380,6 +469,7 @@ onUnmounted(revokeUrls)
   cursor: pointer;
   background: var(--p-surface-100);
   position: relative;
+  transition: opacity 0.15s, transform 0.15s;
 }
 
 .review-thumb.selected {
@@ -387,11 +477,17 @@ onUnmounted(revokeUrls)
   outline-offset: -3px;
 }
 
+.review-thumb.dragging {
+  opacity: 0.4;
+  transform: scale(0.95);
+}
+
 .review-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
 }
 
 .thumb-check {
@@ -405,12 +501,13 @@ onUnmounted(revokeUrls)
 
 .empty-category {
   grid-column: 1 / -1;
-  padding: 1rem;
+  padding: 1.5rem;
   text-align: center;
   color: var(--p-text-muted-color);
   font-size: 0.8125rem;
   background: var(--p-surface-50);
   border-radius: var(--p-border-radius);
+  border: 2px dashed var(--p-surface-200);
 }
 
 .fab-btn {
