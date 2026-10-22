@@ -1,88 +1,73 @@
 <template>
-  <ion-page>
+  <div>
     <PageHeader title="Registros">
       <template #actions>
-        <ion-buttons slot="end">
-          <ion-button router-link="/records/new">
-            <ion-icon slot="icon-only" :icon="addOutline" />
-          </ion-button>
-        </ion-buttons>
+        <Button icon="pi pi-plus" rounded text @click="router.push('/records/new')" />
       </template>
     </PageHeader>
-    <ion-content>
-      <ion-refresher slot="fixed" @ion-refresh="handleRefresh">
-        <ion-refresher-content />
-      </ion-refresher>
-
+    <div style="padding: 1rem;">
       <EmptyState
         v-if="!loading && records.length === 0"
         title="Nenhum registro"
-        description="Toque no botão + para criar um registro de demonstração."
-        :icon="folderOpenOutline"
+        description="Toque no botao + para criar um registro de demonstracao."
+        icon="pi pi-folder-open"
       >
-        <ion-button
-          class="ion-margin-top"
-          router-link="/records/new"
-          fill="outline"
+        <Button
+          label="Criar registro"
+          outlined
           size="small"
-        >
-          Criar registro
-        </ion-button>
+          style="margin-top: 0.75rem;"
+          @click="router.push('/records/new')"
+        />
       </EmptyState>
 
-      <ion-list v-else lines="inset">
-        <ion-item-sliding v-for="record in records" :key="record.id">
-          <ion-item
-            :router-link="`/records/${record.id}`"
-            detail
+      <DataView v-else :value="records" data-key="id">
+        <template #list="slotProps">
+          <div
+            v-for="record in slotProps.items"
+            :key="record.id"
+            style="cursor: pointer; padding: 0.75rem 1rem; border-bottom: 1px solid var(--p-content-border-color);"
+            @click="router.push(`/records/${record.id}`)"
           >
-            <ion-label>
-              <h3>{{ record.title }}</h3>
-              <p v-if="record.description">{{ record.description }}</p>
-              <p class="record-meta">
-                <ion-badge :color="record.status === 'active' ? 'success' : 'medium'">
-                  {{ record.status === 'active' ? 'Ativo' : 'Arquivado' }}
-                </ion-badge>
-                <span>{{ formatDate(record.createdAt) }}</span>
-              </p>
-            </ion-label>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option color="danger" @click="confirmDelete(record)">
-              <ion-icon slot="icon-only" :icon="trashOutline" />
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
-    </ion-content>
-  </ion-page>
+            <div style="font-weight: 500;">{{ record.title }}</div>
+            <div v-if="record.description" style="color: var(--p-text-muted-color); font-size: 0.875rem;">{{ record.description }}</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+              <Tag
+                :value="record.status === 'active' ? 'Ativo' : 'Arquivado'"
+                :severity="record.status === 'active' ? 'success' : 'secondary'"
+              />
+              <span style="font-size: 0.75rem; color: var(--p-text-muted-color);">{{ formatDate(record.createdAt) }}</span>
+              <Button
+                icon="pi pi-trash"
+                text
+                rounded
+                severity="danger"
+                size="small"
+                style="margin-left: auto;"
+                @click.stop="confirmDelete(record)"
+              />
+            </div>
+          </div>
+        </template>
+      </DataView>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import {
-  IonPage,
-  IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonButton,
-  IonButtons,
-  IonIcon,
-  IonBadge,
-  IonRefresher,
-  IonRefresherContent,
-  IonItemSliding,
-  IonItemOptions,
-  IonItemOption,
-  alertController,
-} from '@ionic/vue'
-import { addOutline, folderOpenOutline, trashOutline } from 'ionicons/icons'
+import { useRouter } from 'vue-router'
+import { useConfirm } from 'primevue/useconfirm'
+import Button from 'primevue/button'
+import Tag from 'primevue/tag'
+import DataView from 'primevue/dataview'
 import PageHeader from '../../../components/ui/PageHeader.vue'
 import EmptyState from '../../../components/feedback/EmptyState.vue'
 import { exampleRecordRepository } from '../../../core/database/repositories/example-record.repository'
 import type { ExampleRecord } from '../../../core/database/db'
 
+const router = useRouter()
+const confirm = useConfirm()
 const records = ref<ExampleRecord[]>([])
 const loading = ref(true)
 
@@ -95,11 +80,6 @@ async function loadRecords() {
   }
 }
 
-async function handleRefresh(event: CustomEvent) {
-  await loadRecords()
-  ;(event.target as HTMLIonRefresherElement).complete()
-}
-
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('pt-BR', {
     day: '2-digit',
@@ -108,54 +88,22 @@ function formatDate(iso: string): string {
   })
 }
 
-async function confirmDelete(record: ExampleRecord) {
-  const alert = await alertController.create({
+function confirmDelete(record: ExampleRecord) {
+  confirm.require({
+    message: `Tem certeza que deseja excluir "${record.title}"? Esta acao nao pode ser desfeita.`,
     header: 'Excluir registro',
-    message: `Tem certeza que deseja excluir "${record.title}"? Esta ação não pode ser desfeita.`,
-    buttons: [
-      { text: 'Cancelar', role: 'cancel' },
-      {
-        text: 'Excluir',
-        role: 'destructive',
-        handler: async () => {
-          if (record.id) {
-            await exampleRecordRepository.remove(record.id)
-            await loadRecords()
-          }
-        },
-      },
-    ],
+    icon: 'pi pi-exclamation-triangle',
+    rejectLabel: 'Cancelar',
+    acceptLabel: 'Excluir',
+    acceptClass: 'p-button-danger',
+    accept: async () => {
+      if (record.id) {
+        await exampleRecordRepository.remove(record.id)
+        await loadRecords()
+      }
+    },
   })
-  await alert.present()
 }
 
 onMounted(loadRecords)
 </script>
-
-<style scoped>
-ion-item h3 {
-  font-size: var(--font-size-base) !important;
-  font-weight: var(--font-weight-medium) !important;
-}
-
-ion-item p {
-  font-size: var(--font-size-sm) !important;
-}
-
-.record-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
-}
-
-.record-meta ion-badge {
-  font-size: var(--font-size-xs);
-  padding: 2px 6px;
-}
-
-.record-meta span {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-}
-</style>

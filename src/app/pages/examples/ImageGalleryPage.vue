@@ -1,226 +1,92 @@
+<template>
+  <div>
+    <Toolbar>
+      <template #start>
+        <Button icon="pi pi-arrow-left" text rounded @click="router.push('/home')" />
+        <span style="font-weight: 600; font-size: 1.1rem; margin-left: 0.5rem;">Galeria de Imagens</span>
+      </template>
+    </Toolbar>
+
+    <div style="padding: 1rem;">
+      <p style="color: var(--p-text-muted-color); text-align: center; margin-bottom: 1rem;">
+        Explore nossa colecao de paisagens
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem;">
+        <Card
+          v-for="img in images"
+          :key="img.id"
+          style="cursor: pointer; overflow: hidden;"
+          @click="selectedImage = img"
+        >
+          <template #header>
+            <div
+              style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center;"
+              :style="{ background: `linear-gradient(135deg, ${img.color}, ${img.color}dd)` }"
+            >
+              <span style="font-size: 3rem;">{{ img.icon }}</span>
+            </div>
+          </template>
+          <template #content>
+            <div style="font-weight: 500; font-size: 0.875rem;">{{ img.title }}</div>
+            <div style="color: var(--p-text-muted-color); font-size: 0.75rem;">{{ img.description }}</div>
+          </template>
+        </Card>
+      </div>
+
+      <Dialog v-model:visible="dialogVisible" :header="selectedImage?.title ?? ''" modal style="width: 90vw; max-width: 600px;">
+        <div v-if="selectedImage">
+          <div
+            style="width: 100%; aspect-ratio: 16 / 9; border-radius: var(--p-border-radius); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;"
+            :style="{ background: `linear-gradient(135deg, ${selectedImage.color}, ${selectedImage.color}cc)` }"
+          >
+            <span style="font-size: 6rem;">{{ selectedImage.icon }}</span>
+          </div>
+          <h2 style="margin: 0 0 0.5rem;">{{ selectedImage.title }}</h2>
+          <p style="color: var(--p-text-muted-color); margin: 0 0 1rem;">{{ selectedImage.description }}</p>
+          <div style="display: flex; gap: 1.5rem; font-size: 0.875rem; color: var(--p-text-muted-color);">
+            <span>Resolucao: 3840 x 2160</span>
+            <span>Formato: JPEG</span>
+          </div>
+        </div>
+      </Dialog>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
-import { ref } from 'vue';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButtons,
-  IonBackButton,
-  IonModal,
-  IonButton,
-  IonIcon,
-} from '@ionic/vue';
-import { closeOutline, expandOutline } from 'ionicons/icons';
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import Toolbar from 'primevue/toolbar'
+import Button from 'primevue/button'
+import Card from 'primevue/card'
+import Dialog from 'primevue/dialog'
+
+const router = useRouter()
 
 interface GalleryImage {
-  id: number;
-  title: string;
-  description: string;
-  color: string;
-  icon: string;
+  id: number
+  title: string
+  description: string
+  color: string
+  icon: string
 }
 
 const images: GalleryImage[] = [
   { id: 1, title: 'Montanhas ao Amanhecer', description: 'Paisagem com montanhas e nevoeiro', color: '#2d5a27', icon: '🏔️' },
-  { id: 2, title: 'Praia Tropical', description: 'Areia branca e águas cristalinas', color: '#1a6b8a', icon: '🏖️' },
-  { id: 3, title: 'Floresta Encantada', description: 'Trilha entre árvores centenárias', color: '#1b4332', icon: '🌲' },
-  { id: 4, title: 'Cidade à Noite', description: 'Luzes urbanas e arranha-céus', color: '#1a1a2e', icon: '🌃' },
-  { id: 5, title: 'Cachoeira Véu de Noiva', description: 'Queda d\'água em meio à mata', color: '#264653', icon: '💧' },
-  { id: 6, title: 'Deserto Dourado', description: 'Dunas infinitas ao pôr do sol', color: '#8a5a00', icon: '🏜️' },
-  { id: 7, title: 'Aurora Boreal', description: 'Fenômeno natural espetacular', color: '#0d3b66', icon: '🌌' },
-  { id: 8, title: 'Jardim Botânico', description: 'Flores multicoloridas e caminhos', color: '#606c38', icon: '🌸' },
+  { id: 2, title: 'Praia Tropical', description: 'Areia branca e aguas cristalinas', color: '#1a6b8a', icon: '🏖️' },
+  { id: 3, title: 'Floresta Encantada', description: 'Trilha entre arvores centenarias', color: '#1b4332', icon: '🌲' },
+  { id: 4, title: 'Cidade a Noite', description: 'Luzes urbanas e arranha-ceus', color: '#1a1a2e', icon: '🌃' },
+  { id: 5, title: 'Cachoeira Veu de Noiva', description: 'Queda d\'agua em meio a mata', color: '#264653', icon: '💧' },
+  { id: 6, title: 'Deserto Dourado', description: 'Dunas infinitas ao por do sol', color: '#8a5a00', icon: '🏜️' },
+  { id: 7, title: 'Aurora Boreal', description: 'Fenomeno natural espetacular', color: '#0d3b66', icon: '🌌' },
+  { id: 8, title: 'Jardim Botanico', description: 'Flores multicoloridas e caminhos', color: '#606c38', icon: '🌸' },
   { id: 9, title: 'Lago Espelhado', description: 'Reflexo perfeito das montanhas', color: '#3a5a7c', icon: '🏞️' },
-];
+]
 
-const selectedImage = ref<GalleryImage | null>(null);
+const selectedImage = ref<GalleryImage | null>(null)
+const dialogVisible = computed({
+  get: () => !!selectedImage.value,
+  set: (val) => { if (!val) selectedImage.value = null },
+})
 </script>
-
-<template>
-  <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonBackButton default-href="/home" />
-        </IonButtons>
-        <IonTitle>Galeria de Imagens</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-
-    <IonContent class="ion-padding">
-      <p class="gallery-subtitle">
-        Explore nossa coleção de paisagens
-      </p>
-
-      <div class="gallery-grid">
-        <button
-          v-for="img in images"
-          :key="img.id"
-          class="gallery-item"
-          @click="selectedImage = img"
-        >
-          <div
-            class="gallery-item__image"
-            :style="{ background: `linear-gradient(135deg, ${img.color}, ${img.color}dd)` }"
-          >
-            <span class="gallery-item__icon">{{ img.icon }}</span>
-            <div class="gallery-item__overlay">
-              <IonIcon :icon="expandOutline" />
-            </div>
-          </div>
-          <div class="gallery-item__info">
-            <h3>{{ img.title }}</h3>
-            <p>{{ img.description }}</p>
-          </div>
-        </button>
-      </div>
-
-      <IonModal
-        :is-open="!!selectedImage"
-        @did-dismiss="selectedImage = null"
-      >
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>{{ selectedImage?.title }}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton @click="selectedImage = null">
-                <IonIcon
-                  slot="icon-only"
-                  :icon="closeOutline"
-                />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent
-          v-if="selectedImage"
-          class="ion-padding"
-        >
-          <div
-            class="detail-image"
-            :style="{ background: `linear-gradient(135deg, ${selectedImage.color}, ${selectedImage.color}cc)` }"
-          >
-            <span class="detail-icon">{{ selectedImage.icon }}</span>
-          </div>
-          <h2 class="detail-title">
-            {{ selectedImage.title }}
-          </h2>
-          <p class="detail-description">
-            {{ selectedImage.description }}
-          </p>
-          <div class="detail-meta">
-            <span>Resolução: 3840 × 2160</span>
-            <span>Formato: JPEG</span>
-          </div>
-        </IonContent>
-      </IonModal>
-    </IonContent>
-  </IonPage>
-</template>
-
-<style scoped>
-.gallery-subtitle {
-  color: var(--color-text-secondary);
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--spacing-md);
-}
-
-.gallery-item {
-  all: unset;
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.gallery-item:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.gallery-item__image {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.gallery-item__icon {
-  font-size: 48px;
-}
-
-.gallery-item__overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-  color: white;
-  font-size: 24px;
-}
-
-.gallery-item:hover .gallery-item__overlay {
-  opacity: 1;
-}
-
-.gallery-item__info {
-  padding: var(--spacing-sm);
-}
-
-.gallery-item__info h3 {
-  font-size: var(--font-size-sm);
-  margin: 0 0 2px;
-  color: var(--color-text-primary);
-}
-
-.gallery-item__info p {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
-.detail-image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--spacing-lg);
-}
-
-.detail-icon {
-  font-size: 96px;
-}
-
-.detail-title {
-  font-size: var(--font-size-xl);
-  margin: 0 0 var(--spacing-sm);
-  color: var(--color-text-primary);
-}
-
-.detail-description {
-  color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-lg);
-}
-
-.detail-meta {
-  display: flex;
-  gap: var(--spacing-lg);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-</style>

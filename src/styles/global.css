@@ -1,5 +1,3 @@
-@import './tokens.css';
-
 *,
 *::before,
 *::after {
@@ -9,50 +7,22 @@
 }
 
 html {
-  font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text-primary);
-  background-color: var(--color-background);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--color-background);
 }
 
-/* iOS Safari: inputs >=16px para evitar zoom automático */
+/* iOS Safari: inputs >=16px to prevent auto-zoom */
 input,
 select,
 textarea {
-  font-size: var(--font-size-input);
+  font-size: 16px;
 }
 
-ion-input {
-  --placeholder-font-size: var(--font-size-input);
-  font-size: var(--font-size-input);
-}
-
-ion-textarea {
-  --placeholder-font-size: var(--font-size-input);
-  font-size: var(--font-size-input);
-}
-
-ion-select {
-  font-size: var(--font-size-input);
-}
-
-/* Foco visível */
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-/* Respeitar preferência de movimento reduzido */
+/* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -64,76 +34,7 @@ ion-select {
   }
 }
 
-/* Ionic overrides para design system próprio */
-ion-content {
-  --background: var(--color-background);
-}
-
-ion-toolbar {
-  --background: var(--color-surface);
-  --color: var(--color-text-primary);
-  --border-color: var(--color-border);
-  --padding-start: var(--space-4);
-  --padding-end: var(--space-4);
-}
-
-ion-title {
-  padding-inline-start: var(--space-4);
-  padding-inline-end: var(--space-4);
-}
-
-ion-tab-bar {
-  --background: var(--color-surface);
-  --color: var(--color-text-muted);
-  --color-selected: var(--color-primary);
-  --border: 1px solid var(--color-border);
-}
-
-ion-item {
-  --background: var(--color-surface);
-  --color: var(--color-text-primary);
-  --border-color: var(--color-border-light);
-  --padding-start: var(--space-4);
-  --padding-end: var(--space-4);
-  --min-height: var(--touch-target-min);
-  font-size: var(--font-size-base);
-}
-
-ion-item ion-icon[slot='start'] {
-  margin-inline-end: var(--space-3);
-  font-size: 22px;
-}
-
-ion-badge {
-  padding: var(--space-1) var(--space-2);
-  font-size: var(--font-size-xs);
-  border-radius: var(--radius-sm);
-}
-
-ion-card {
-  --background: var(--color-surface);
-  --color: var(--color-text-primary);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  margin: var(--space-2) var(--space-4);
-}
-
-ion-card-header {
-  padding: var(--space-4) var(--space-4) var(--space-2);
-}
-
-ion-card-content {
-  padding: var(--space-2) var(--space-4) var(--space-4);
-}
-
-ion-button {
-  --border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
-  min-height: var(--touch-target-min);
-}
-
-/* Scrollbar sutil */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -143,6 +44,6 @@ ion-button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: var(--radius-full);
+  background: var(--p-surface-300);
+  border-radius: 9999px;
 }
