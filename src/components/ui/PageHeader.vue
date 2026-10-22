@@ -1,58 +1,44 @@
 <template>
   <div class="page-header">
-    <div class="page-header-left">
-      <Button
-        v-if="showBack"
-        icon="pi pi-arrow-left"
-        text
-        rounded
-        size="small"
-        @click="router.push(backHref)"
-      />
-      <div>
-        <h1 class="page-header-title">{{ title }}</h1>
-        <p v-if="subtitle" class="page-header-subtitle">{{ subtitle }}</p>
+    <div class="page-header-top">
+      <div class="page-header-left">
+        <div>
+          <AppBreadcrumb />
+          <h1 class="page-header-title">{{ title }}</h1>
+          <p v-if="subtitle" class="page-header-subtitle">{{ subtitle }}</p>
+        </div>
       </div>
-    </div>
-    <div class="page-header-actions">
-      <slot name="actions" />
+      <div class="page-header-actions">
+        <slot name="actions" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import Button from 'primevue/button'
+import AppBreadcrumb from './AppBreadcrumb.vue'
 
-const router = useRouter()
-
-withDefaults(
-  defineProps<{
-    title: string
-    subtitle?: string
-    showBack?: boolean
-    backHref?: string
-  }>(),
-  {
-    subtitle: '',
-    showBack: false,
-    backHref: '/',
-  },
-)
+defineProps<{
+  title: string
+  subtitle?: string
+}>()
 </script>
 
 <style scoped>
 .page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 1.25rem 1.5rem;
+}
+
+.page-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 1rem;
 }
 
 .page-header-left {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   min-width: 0;
 }
@@ -60,7 +46,7 @@ withDefaults(
 .page-header-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0;
+  margin: 0.125rem 0 0;
   line-height: 1.3;
 }
 

@@ -23,15 +23,55 @@ export interface SyncQueueItem {
   lastError: string | null
 }
 
+export interface Project {
+  id: string
+  name: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface PhotoCategory {
+  id: string
+  projectId: string
+  name: string
+  order: number
+}
+
+export interface Photo {
+  id: string
+  projectId: string
+  categoryId: string | null
+  filename: string
+  originalFilename: string
+  order: number
+  width: number
+  height: number
+  size: number
+  blob: Blob
+  thumbnailBlob: Blob
+  createdAt: string
+  updatedAt: string
+}
+
 export class AppDatabase extends Dexie {
   exampleRecords!: Table<ExampleRecord, string>
   syncQueue!: Table<SyncQueueItem, number>
+  projects!: Table<Project, string>
+  photoCategories!: Table<PhotoCategory, string>
+  photos!: Table<Photo, string>
 
   constructor() {
     super('pwa-starter-kit')
     this.version(1).stores({
       exampleRecords: 'id, status, createdAt, updatedAt',
       syncQueue: '++id, entityType, entityId, status, nextAttemptAt',
+    })
+    this.version(2).stores({
+      exampleRecords: 'id, status, createdAt, updatedAt',
+      syncQueue: '++id, entityType, entityId, status, nextAttemptAt',
+      projects: 'id, name, createdAt',
+      photoCategories: 'id, projectId, name, order',
+      photos: 'id, projectId, categoryId, order, filename, createdAt',
     })
   }
 }
