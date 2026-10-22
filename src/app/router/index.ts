@@ -26,8 +26,36 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'projects',
         name: 'projects',
-        component: () => import('../../features/example-records/pages/RecordsPage.vue'),
+        component: () => import('../../features/projects/pages/ProjectsPage.vue'),
         meta: { breadcrumb: 'Projetos' },
+      },
+      {
+        path: 'projects/:id',
+        name: 'project-detail',
+        component: () => import('../../features/projects/pages/ProjectDetailPage.vue'),
+        props: true,
+        meta: { breadcrumb: 'Projeto' },
+      },
+      {
+        path: 'projects/:id/triage',
+        name: 'project-triage',
+        component: () => import('../../features/projects/pages/TriagePage.vue'),
+        props: true,
+        meta: { breadcrumb: 'Fotos por categorizar' },
+      },
+      {
+        path: 'projects/:id/review',
+        name: 'project-review',
+        component: () => import('../../features/projects/pages/ReviewPage.vue'),
+        props: true,
+        meta: { breadcrumb: 'Revisão' },
+      },
+      {
+        path: 'projects/:id/export',
+        name: 'project-export',
+        component: () => import('../../features/projects/pages/ProjectExportPage.vue'),
+        props: true,
+        meta: { breadcrumb: 'Exportar' },
       },
       {
         path: 'records',

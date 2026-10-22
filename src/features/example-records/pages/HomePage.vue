@@ -1,122 +1,56 @@
 <template>
   <div>
-    <PageHeader title="Inicio" subtitle="Bem-vindo ao PWA Starter Kit" />
+    <PageHeader title="Inicio" subtitle="Gerencie seus projetos de inspeção" />
 
     <div class="home-content">
-      <!-- Stats cards -->
-      <div class="stats-grid">
+      <Card>
+        <template #content>
+          <div class="welcome-body">
+            <div class="welcome-text">
+              <div class="welcome-title">Bem-vindo</div>
+              <div class="welcome-desc">
+                Importe fotos, categorize e exporte projetos de inspeção organizados.
+              </div>
+            </div>
+          </div>
+        </template>
+      </Card>
+
+      <div class="quick-actions">
+        <Button
+          label="Meus projetos"
+          icon="pi pi-folder"
+          class="action-btn"
+          @click="router.push('/projects')"
+        />
+        <Button
+          label="Novo projeto"
+          icon="pi pi-plus"
+          outlined
+          class="action-btn"
+          @click="router.push('/projects')"
+        />
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
         <Card class="stat-card">
           <template #content>
-            <div class="stat-card-body">
-              <div>
-                <div class="stat-value">{{ recordCount }}</div>
-                <div class="stat-label">Registros</div>
-              </div>
-              <i class="pi pi-database stat-icon" />
+            <div class="stat-body">
+              <div class="stat-value">{{ projectCount }}</div>
+              <div class="stat-label">Projetos</div>
             </div>
           </template>
         </Card>
         <Card class="stat-card">
           <template #content>
-            <div class="stat-card-body">
-              <div>
-                <div class="stat-value">{{ pendingOps }}</div>
-                <div class="stat-label">Pendentes</div>
-              </div>
-              <i class="pi pi-sync stat-icon" />
-            </div>
-          </template>
-        </Card>
-        <Card class="stat-card">
-          <template #content>
-            <div class="stat-card-body">
-              <div>
-                <div class="stat-value">{{ storageDisplay }}</div>
-                <div class="stat-label">Armazenamento</div>
-              </div>
-              <i class="pi pi-server stat-icon" />
+            <div class="stat-body">
+              <div class="stat-value">{{ storageDisplay }}</div>
+              <div class="stat-label">Armazenamento</div>
             </div>
           </template>
         </Card>
       </div>
-
-      <!-- Quick actions -->
-      <Card>
-        <template #title>Acoes rapidas</template>
-        <template #content>
-          <div class="quick-actions">
-            <Button
-              label="Novo registro"
-              icon="pi pi-plus"
-              @click="router.push('/records/new')"
-            />
-            <Button
-              label="Ver registros"
-              icon="pi pi-database"
-              outlined
-              @click="router.push('/records')"
-            />
-            <Button
-              label="Vitrine de componentes"
-              icon="pi pi-palette"
-              outlined
-              @click="router.push('/showcase')"
-            />
-          </div>
-        </template>
-      </Card>
-
-      <!-- Features -->
-      <Card>
-        <template #title>Funcionalidades</template>
-        <template #content>
-          <div class="features-list">
-            <div v-for="item in features" :key="item.title" class="feature-item">
-              <div class="feature-icon-wrapper">
-                <i :class="item.icon" class="feature-icon" />
-              </div>
-              <div>
-                <div class="feature-title">{{ item.title }}</div>
-                <div class="feature-desc">{{ item.description }}</div>
-              </div>
-            </div>
-          </div>
-        </template>
-      </Card>
-
-      <!-- Example pages -->
-      <Card>
-        <template #title>Paginas de exemplo</template>
-        <template #subtitle>Explore os exemplos para ver o que o kit oferece</template>
-        <template #content>
-          <div class="example-links">
-            <Button
-              label="Dashboard financeiro"
-              icon="pi pi-chart-bar"
-              outlined
-              @click="router.push('/examples/dashboard')"
-            />
-            <Button
-              label="Gestao de contactos"
-              icon="pi pi-users"
-              outlined
-              @click="router.push('/examples/contacts')"
-            />
-            <Button
-              label="Login"
-              icon="pi pi-sign-in"
-              outlined
-              @click="router.push('/examples/login')"
-            />
-            <Button
-              label="Cadastro"
-              icon="pi pi-user-plus"
-              outlined
-              @click="router.push('/examples/signup')"
-            />
-          </div>
-        </template>
-      </Card>
     </div>
   </div>
 </template>
@@ -127,25 +61,17 @@ import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import PageHeader from '../../../components/ui/PageHeader.vue'
-import { exampleRecordRepository } from '../../../core/database/repositories/example-record.repository'
-import { syncQueue } from '../../../core/sync/queue'
+import { projectRepository } from '../../../core/database/repositories/project.repository'
 import { getStorageEstimate, formatBytes } from '../../../core/storage/storage-manager'
 
 const router = useRouter()
-const recordCount = ref(0)
-const pendingOps = ref(0)
+const projectCount = ref(0)
 const storageDisplay = ref('...')
 
-const features = [
-  { icon: 'pi pi-mobile', title: 'Mobile-first', description: 'Interface otimizada para telas pequenas' },
-  { icon: 'pi pi-cloud', title: 'Offline-first', description: 'Funciona sem internet apos o primeiro carregamento' },
-  { icon: 'pi pi-database', title: 'Dados locais', description: 'IndexedDB com Dexie.js para persistencia estruturada' },
-  { icon: 'pi pi-download', title: 'Exportacao e importacao', description: 'Backup e recuperacao dos dados do dispositivo' },
-]
-
 onMounted(async () => {
-  recordCount.value = await exampleRecordRepository.count()
-  pendingOps.value = await syncQueue.pendingCount()
+  const projects = await projectRepository.getAllProjects()
+  projectCount.value = projects.length
+
   const estimate = await getStorageEstimate()
   if (estimate) {
     storageDisplay.value = formatBytes(estimate.usage)
@@ -158,90 +84,58 @@ onMounted(async () => {
 <style scoped>
 .home-content {
   padding: 0 1.5rem 2rem;
-  max-width: 900px;
+  max-width: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1rem;
 }
 
-.stat-card-body {
+.welcome-body {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1rem;
 }
 
-.stat-value {
-  font-size: 1.75rem;
+.welcome-title {
   font-weight: 700;
-  line-height: 1.2;
+  font-size: 1.1rem;
 }
 
-.stat-label {
-  font-size: 0.875rem;
+.welcome-desc {
   color: var(--p-text-muted-color);
-  margin-top: 0.125rem;
-}
-
-.stat-icon {
-  font-size: 2rem;
-  color: var(--p-primary-color);
-  opacity: 0.5;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
 .quick-actions {
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
 }
 
-.features-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.action-btn {
+  flex: 1;
 }
 
-.feature-item {
-  display: flex;
-  align-items: flex-start;
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
 }
 
-.feature-icon-wrapper {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: var(--p-border-radius);
-  background: var(--p-primary-50);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.stat-body {
+  text-align: center;
 }
 
-.feature-icon {
-  font-size: 1.1rem;
-  color: var(--p-primary-color);
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
-.feature-title {
-  font-weight: 600;
-}
-
-.feature-desc {
+.stat-label {
+  font-size: 0.75rem;
   color: var(--p-text-muted-color);
-  font-size: 0.875rem;
-}
-
-.example-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  margin-top: 0.125rem;
 }
 
 @media (max-width: 640px) {
@@ -249,8 +143,8 @@ onMounted(async () => {
     padding: 0 1rem 2rem;
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr;
+  .quick-actions {
+    flex-direction: column;
   }
 }
 </style>
