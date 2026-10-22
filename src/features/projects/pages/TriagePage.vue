@@ -25,6 +25,16 @@
         <span class="triage-hint">Toque em uma foto para categorizar</span>
       </div>
     </div>
+
+    <ImageViewer
+      v-model:visible="viewerVisible"
+      :photos="photos"
+      :initial-photo-id="viewerPhotoId"
+      :project-id="id"
+      :categories="categories"
+      @photo-moved="reloadPhotos"
+      @photo-deleted="reloadPhotos"
+    />
   </div>
 </template>
 
@@ -34,20 +44,31 @@ import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
 import PageHeader from '../../../components/ui/PageHeader.vue'
+import ImageViewer from '../../../components/viewer/ImageViewer.vue'
 import { projectRepository } from '../../../core/database/repositories/project.repository'
-import type { Photo } from '../../../core/database/db'
+import type { Photo, PhotoCategory } from '../../../core/database/db'
 
 const props = defineProps<{ id: string }>()
 const router = useRouter()
 
 const photos = ref<Photo[]>([])
+const categories = ref<PhotoCategory[]>([])
 const loading = ref(true)
 const objectUrls = ref<string[]>([])
+const viewerVisible = ref(false)
+const viewerPhotoId = ref('')
 
 async function loadPhotos() {
   loading.value = true
+  revokeUrls()
   photos.value = await projectRepository.getInboxPhotos(props.id)
+  categories.value = await projectRepository.getCategoriesForProject(props.id)
   loading.value = false
+}
+
+async function reloadPhotos() {
+  revokeUrls()
+  photos.value = await projectRepository.getInboxPhotos(props.id)
 }
 
 function getThumbnailUrl(photo: Photo): string {
@@ -56,15 +77,19 @@ function getThumbnailUrl(photo: Photo): string {
   return url
 }
 
+function revokeUrls() {
+  objectUrls.value.forEach((url) => URL.revokeObjectURL(url))
+  objectUrls.value = []
+}
+
 function openViewer(photoId: string) {
-  router.push(`/projects/${props.id}/triage?photo=${photoId}`)
+  viewerPhotoId.value = photoId
+  viewerVisible.value = true
 }
 
 onMounted(loadPhotos)
 
-onUnmounted(() => {
-  objectUrls.value.forEach(url => URL.revokeObjectURL(url))
-})
+onUnmounted(revokeUrls)
 </script>
 
 <style scoped>
